@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { fetchMain } from "../api/main";
 
 const useFetchMain = () => {
   const [mainData, setMainData] = useState([]);
@@ -8,9 +9,7 @@ const useFetchMain = () => {
   useEffect(() => {
     const fetchMainData = async () => {
       try {
-        const res = await fetch("http://localhost:3001/api/main");
-        if (!res.ok) throw new Error("Failed to fetch main data");
-        const data = await res.json();
+        const data = await fetchMain();
         console.log("Fetched main data:", data);
         setMainData(data);
       } catch (err) {
