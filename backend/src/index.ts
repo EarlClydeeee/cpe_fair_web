@@ -14,16 +14,6 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// // 1. GET Main Data
-// app.get("/api/main", async (req: Request, res: Response) => {
-//   const { data, error } = await supabase.from("main").select("*");
-
-//   if (error) {
-//     return res.status(500).json({ error: error.message });
-//   }
-//   res.status(200).json(data);
-// });
-
 // --- API Routes ---
 app.use("/api/main", mainRoutes);
 
