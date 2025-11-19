@@ -113,6 +113,55 @@ export const deleteScore = async (req: Request, res: Response) => {
   }
 };
 
+// GET scores for all section teams
+export const getScoresByAllSectionTeam = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    // Extend Score type to include joined player and team fields
+    type ScoreWithJoins = Score & {
+      player?: { full_name: string; section: string } | null;
+      team?: { team_name: string; section: string } | null;
+    };
+    const { data, error } = await supabase
+      .from("score")
+      .select(
+        `
+        *,
+        player:player_id(full_name, section),
+        team:team_id(team_name, section)
+      `
+      )
+      .returns<ScoreWithJoins[]>();
+
+    if (error) {
+      logger.error("Failed to fetch scores", error);
+      return res.status(500).json({ error: error.message });
+    }
+
+    // Group scores by section_team (from player.section or team.section)
+    const sectionMap: Record<string, ScoreWithJoins[]> = {};
+    (data || []).forEach((score) => {
+      const section = score.player?.section || score.team?.section || "Unknown";
+      if (!sectionMap[section]) sectionMap[section] = [];
+      sectionMap[section].push(score);
+    });
+
+    // Build response: array of { section_team, totalPoints, scores }
+    const result = Object.entries(sectionMap).map(([section_team, scores]) => ({
+      section_team,
+      totalPoints: scores.reduce((sum, score) => sum + (score.points ?? 0), 0),
+      scores,
+    }));
+
+    res.status(200).json(result);
+  } catch (err: any) {
+    logger.error("Failed to fetch scores", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // GET scores by section team
 export const getScoresBySectionTeam = async (req: Request, res: Response) => {
   const { section_team } = req.params;

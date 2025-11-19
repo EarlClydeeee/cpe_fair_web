@@ -4,6 +4,7 @@ import {
   createScore,
   updateScore,
   deleteScore,
+  getScoresByAllSectionTeam,
   getScoresBySectionTeam,
 } from "../controllers/score.controller.js";
 
@@ -15,8 +16,10 @@ router.get("/", getScores);
 router.post("/", createScore);
 // // PUT /api/score/:id
 router.put("/:id", updateScore);
+// Get overall score for all section team
+router.get('/section_team', getScoresByAllSectionTeam)
 // Get overall score for a section team
-router.get("/:section_team", getScoresBySectionTeam);
+router.get("/section_team/:section_team", getScoresBySectionTeam);
 // DELETE /api/score/:id
 router.delete("/:id", deleteScore);
 
