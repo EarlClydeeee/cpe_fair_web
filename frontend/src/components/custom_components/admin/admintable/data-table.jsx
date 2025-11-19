@@ -19,16 +19,13 @@ import {
 } from "@tanstack/react-table";
 import { useState, useEffect } from "react";
 import DataTableToolbar from "./data-table-toolbar";
-import useFetchMain from "../../../../custom-hooks/useFetchMain";
-
-
+import useMain from "../../../../custom-hooks/useMain";
 
 function DataTable({ columns }) {
   const [sorting, setSorting] = useState([]); // sorting
   const [columnFilters, setColumnFilters] = useState([]); // filtering
-  const { mainData } = useFetchMain();
 
-  
+  const { mainData, loading, error } = useMain();
 
   const table = useReactTable({
     data: mainData,
@@ -46,6 +43,9 @@ function DataTable({ columns }) {
       columnFilters, // filtering
     },
   });
+
+  if (loading) return <p>Loading players...</p>;
+  if (error) return <p>Error loading data: {error}</p>;
 
   return (
     <div className="flex flex-col gap-4">
