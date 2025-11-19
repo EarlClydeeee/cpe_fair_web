@@ -12,7 +12,7 @@ import { useState } from "react";
 import { PointsManager } from "@/components/custom_components/PointsManager";
 import { EditFormDialog } from "@/components/custom_components/EditForm";
 import useFetchTeamPlayers from "@/custom-hooks/useFetchTeamPlayers";
-import { supabase } from "@/supabase/config";
+import useDeleteMain from "@/custom-hooks/useDeleteMain";
 import {
   Dialog,
   DialogContent,
@@ -127,6 +127,8 @@ export const columns = [
       const { playersData } = useFetchTeamPlayers(teamName);
       const [isAlertOpen, setIsAlertOpen] = useState(false); // Manage alert dialog state
 
+      const { handleDelete, loading, error } = useDeleteMain();
+
       const teamPlayers = playersData.map((player) => player.player_name);
 
       const handleSetTeamPlayers = (updatedPlayers) => {
@@ -151,16 +153,11 @@ export const columns = [
       };
 
       const handleDeletePlayer = async (playerId) => {
-        const { data, error } = await supabase
-          .from("main")
-          .delete()
-          .eq("id", playerId);
-        toast.success("Player/Team Deleted");
-
-        if (error) {
-          toast.error("Error deleting player:", error.message);
+        if (!playerId) {
+          toast.error("Invalid player ID");
           return;
         }
+        await handleDelete(playerId);
       };
 
       return (
