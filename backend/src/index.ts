@@ -9,6 +9,7 @@ import { logger } from "./utils/logger.js";
 import scoreRoutes from "./routes/score.routes.js";
 import playerRoutes from "./routes/player.routes.js";
 import teamRoutes from "./routes/team.routes.js";
+import gameRoutes from "./routes/game.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use("/api/score", scoreRoutes);
 app.use("/api/player", playerRoutes);
 app.use("/api/team", teamRoutes);
+app.use("/api/game", gameRoutes);
 
 // Test routes
 app.get("/", (req: Request, res: Response) => {
