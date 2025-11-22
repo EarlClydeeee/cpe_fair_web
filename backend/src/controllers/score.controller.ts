@@ -216,7 +216,6 @@ export const getScoresByAllSectionTeam = async (req: Request, res: Response) => 
       };
     });
 
-    // 4. Sort Leaderboard (The fix is here!)
     // We now respect the 'order' parameter for the main list too.
     // Default to 'desc' (Highest points first) if not specified.
     if (order === 'asc') {
