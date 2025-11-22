@@ -1,15 +1,29 @@
-// Each score can belong to a player OR a team
-export interface Score {
-  id: string;
-  game: string;
-  points: number;
-  player_id?: string | null; // only if it's a player score
-  team_id?: string | null;   // only if it's a team score
-  created_at: string;
+export interface ScoreDetails {
+  contributor_name: string;
+  is_group: boolean;
+  members: string[];
 }
 
-// Type for creating a new score
-export type CreateScoreDto = Omit<Score, "id" | "created_at">;
+// Matches the 'public.score' table in Supabase
+export interface Score {
+  id: number;          // Changed to number (bigint in DB usually comes as number/string)
+  team_id: string;     // UUID (Required now, not optional)
+  game: string;
+  points: number;
+  details: ScoreDetails; // The new JSONB column
+  created_at: string;
+  deleted_at?: string | null;
+}
 
-// Type for updating a score
-export type UpdateScoreDto = Partial<Omit<Score, "id" | "created_at">>;
+// DTO for creating a score from Frontend
+export interface CreateScoreDto {
+  teamId: string;
+  points: number;
+  game: string;
+  contributor?: string;
+  isGroup?: boolean;
+  members?: string[];
+}
+
+// DTO for updating
+export type UpdateScoreDto = Partial<CreateScoreDto>;
