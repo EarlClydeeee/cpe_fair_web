@@ -3,38 +3,15 @@
 @plugin "tailwindcss-animate";
 
 @font-face {
-  font-family: "Formula1-Regular";
-  src: url("/fonts/Formula1-Regular.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Formula1-Bold";
-  src: url("/fonts/Formula1-Bold.otf") format("opentype");
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Formula1-Wide";
-  src: url("/fonts/Formula1-Wide.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Protipo-Icons";
-  src: url("/fonts/TypeTogether-Protipo-Icons.otf") format("opentype");
+  font-family: "Genshin-Font";
+  src: url("/fonts/Genshin-Font.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @theme {
-  --font-formula1: "Formula1-Regular", sans-serif;
-  --font-formula1Bold: "Formula1-Bold", sans-serif;
-  --font-formula1Wide: "Formula1-Wide", sans-serif;
-  --font-protipoIcons: "Protipo-Icons", sans-serif;
+  --font-genshin: "Genshin-Font", sans-serif;
+  --font-sans: "Genshin-Font", sans-serif;
 
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
