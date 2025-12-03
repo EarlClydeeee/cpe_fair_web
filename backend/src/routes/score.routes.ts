@@ -7,6 +7,7 @@ import {
   deleteScore,
   getScoresByAllSectionTeam,
   getScoresBySectionTeam,
+  getCategoryStandings,
 } from "../controllers/score.controller.js";
 
 const router = Router();
@@ -16,13 +17,30 @@ const router = Router();
 /**
  * GET /api/score
  * List all scores.
+ * Query:
+ *  - type (string): "solo" or "group"
+ *  - category (string): Filter by category
  * Response: List of scores (JSON)
  */
 router.get("/", getScores);
 
 /**
+ * GET /api/score/category-standings
+ * Get scores grouped by game for a specific category.
+ * Query:
+ *  - category (string): Filter by category (e.g., "Sports")
+ * Response: Map of games to ranked scores (JSON)
+ */
+router.get("/category-standings", getCategoryStandings);
+
+/**
  * GET /api/score/section_team
  * Get aggregated scores by section team.
+ * Query:
+ *  - game (string): Filter by game
+ *  - category (string): Filter by category
+ *  - sort (string): "points"
+ *  - order (string): "asc" or "desc"
  * Response: Aggregated scores (JSON)
  */
 router.get("/section_team", getScoresByAllSectionTeam);
@@ -31,6 +49,9 @@ router.get("/section_team", getScoresByAllSectionTeam);
  * GET /api/score/section_team/:section_team
  * Get scores for a specific section team.
  * Param: section_team (string) - The section team identifier
+ * Query:
+ *  - game (string): Filter by game
+ *  - category (string): Filter by category
  * Response: Scores for the section team (JSON)
  */
 router.get("/section_team/:section_team", getScoresBySectionTeam);
@@ -44,6 +65,7 @@ router.get("/section_team/:section_team", getScoresBySectionTeam);
  *  - teamId (string): UUID of the team (Required)
  *  - points (number): Points to award (Required)
  *  - game (string): Name of the game (Required)
+ *  - category (string): Category of the game (Required)
  *  - contributor (string): Name of the contributor
  *  - isGroup (boolean): Whether it is a group score
  *  - members (string[]): List of member names (if group)
@@ -59,6 +81,7 @@ router.post("/", requireAdmin, createScore);
  *  - teamId (string): UUID of the team
  *  - points (number): Points to award
  *  - game (string): Name of the game
+ *  - category (string): Category of the game
  *  - contributor (string): Name of the contributor
  *  - isGroup (boolean): Whether it is a group score
  *  - members (string[]): List of member names (if group)
