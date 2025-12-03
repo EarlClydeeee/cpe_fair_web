@@ -22,7 +22,7 @@ const formatDate = (dateStr?: string | null) => {
   return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 };
 
-// map specific keywords to backgrounds
+
 const BG_MAP: Record<string, string> = {
   fontaine: FontaineBG.src,
   inazuma: InazumaBG.src,
@@ -33,8 +33,7 @@ const BG_MAP: Record<string, string> = {
   snezhnaya: SnezhnayaBG.src,
 };
 
-// return a background url if the team name matches a known key (substring match).
-// otherwise return undefined (no background).
+
 const pickBg = (name?: string | null) => {
   if (!name) return undefined;
   const key = name.toLowerCase();
@@ -53,7 +52,7 @@ const ScheduleEntry = ({ game, teamA, teamB, date, time, location }: Props) => {
   const rightClip = "polygon(60% 0, 100% 0, 100% 100%, 40% 100%)";
 
   return (
-    <article className="relative w-full h-28 rounded-lg overflow-hidden border border-white/20">
+    <article className="relative w-full h-auto py-4 sm:h-32 rounded-lg overflow-hidden border border-white/60">
       {/* background halves */}
       <div className="absolute inset-0" aria-hidden>
         {bgA && (
@@ -91,34 +90,31 @@ const ScheduleEntry = ({ game, teamA, teamB, date, time, location }: Props) => {
         />
       </div>
 
-      {/* content */}
-      <div className="relative z-10 flex items-center h-full px-4">
-        <div className="flex-1 text-left text-white drop-shadow-sm">
-          <div className="text-sm uppercase text-white/80">Team A</div>
-          <div className="font-semibold text-lg">{teamA ?? "TBD"}</div>
+      {/* content: stacked on small screens, horizontal on sm+ */}
+      <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-center h-full px-3 sm:px-6 gap-2 sm:gap-0">
+        <div className="w-full sm:flex-1 text-center sm:text-left text-white drop-shadow-sm">
+          <div className="text-[10px] sm:text-xs uppercase text-white/80">Team</div>
+          <div className="font-semibold text-sm sm:text-lg md:text-xl lg:text-2xl truncate">
+            {teamA ?? "TBD"}
+          </div>
         </div>
 
         {/* center VS + meta */}
-        <div className="flex-none text-center mx-4">
-          <div className="font-bold text-white text-lg">VS</div>
-          <div className="text-xs text-white/90 mt-1">
-            {formattedDate ?? "TBD"} • {time ?? "TBD"}
+        <div className="flex-none text-center mx-0 sm:mx-4">
+          <div className="font-bold text-white text-sm sm:text-lg md:text-xl">VS</div>
+          <div className="text-[10px] sm:text-xs md:text-sm text-white/90 mt-1">
+            {formattedDate ?? "TBD"}{formattedDate || time ? " • " : ""}{time ?? "TBD"}
           </div>
-          <div className="text-xs text-white/80">{location ?? ""}</div>
+          <div className="text-[9px] sm:text-xs text-white/80 mt-1 truncate">{location ?? ""}</div>
         </div>
 
-        <div className="flex-1 text-right text-white drop-shadow-sm">
-          <div className="text-sm uppercase text-white/80">Team B</div>
-          <div className="font-semibold text-lg">{teamB ?? "TBD"}</div>
+        <div className="w-full sm:flex-1 text-center sm:text-right text-white drop-shadow-sm">
+          <div className="text-[10px] sm:text-xs uppercase text-white/80">Team</div>
+          <div className="font-semibold text-sm sm:text-lg md:text-xl lg:text-2xl truncate">
+            {teamB ?? "TBD"}
+          </div>
         </div>
       </div>
-
-      {/* game title footer */}
-      {game && (
-        <div className="absolute left-4 bottom-2 text-xs text-white/80 z-20">
-          {game}
-        </div>
-      )}
     </article>
   );
 };

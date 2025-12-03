@@ -13,7 +13,8 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#010010] flex flex-col items-center">
+    <div className="min-h-screen bg-linear-to-b from-[#050425] to-[#000000] flex flex-col items-center"
+    >
       <ToastContainer
         position="top-right"
         autoClose={5000}

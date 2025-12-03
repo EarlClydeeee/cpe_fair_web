@@ -16,7 +16,7 @@ const MainLogoArchon = () => {
       <img
         src={MainLogo.src}
         alt="CPE Fair Logo"
-        className="w-100 sm:w-40 md:w-60 lg:w-80 xl:w-100 max-w-full h-auto"
+        className="w-80 sm:w-80 md:w-100 lg:w-100 xl:w-100 max-w-full h-auto"
       />
     </button>
   );

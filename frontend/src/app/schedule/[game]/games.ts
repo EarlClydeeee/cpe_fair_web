@@ -6,6 +6,9 @@ const MOCK_SCHEDULE = [
       { game: "Fontaine vs Inazuma", teamA: "Fontaine", teamB: "Inazuma", date: "2025-01-10", time: "09:00 AM", location: "Court A" },
       { game: "Liyue vs Mondstadt", teamA: "Liyue", teamB: "Mondstadt", date: "2025-01-10", time: "10:30 AM", location: "Court A" },
       { game: "Natlan vs Sumeru", teamA: "Natlan", teamB: "Sumeru", date: "2025-01-10", time: "01:00 PM", location: "Court A" },
+      { game: "Fontaine vs Inazuma", teamA: "Fontaine", teamB: "Inazuma", date: "2025-01-10", time: "09:00 AM", location: "Court A" },
+      { game: "Liyue vs Mondstadt", teamA: "Liyue", teamB: "Mondstadt", date: "2025-01-10", time: "10:30 AM", location: "Court A" },
+      { game: "Natlan vs Sumeru", teamA: "Natlan", teamB: "Sumeru", date: "2025-01-10", time: "01:00 PM", location: "Court A" },
     ]
   },
   {
