@@ -1,11 +1,14 @@
 "use client";
 
-import React from 'react';
+import React from "react";
+import PlayerTable from "@/components/admin/player/PlayerTable";
 
 export default function RegistryPage() {
   return (
-    <div className="text-center py-20">
-      <h3 className="text-xl text-[#ece5d8]">Registry View</h3>
-    </div>
+    <>
+      <div className="relative z-10 h-[calc(100vh-100px)]">
+        <PlayerTable />
+      </div>
+    </>
   );
 }
