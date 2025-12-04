@@ -326,7 +326,7 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
   // View 1: List of Games
   if (!selectedGame) {
     return (
-      <div className="w-full px-[8vh] mb-6">
+      <div className="w-full px-[3vh] md:px-[10vh] mb-6">
         <h3 className="text-2xl font-bold text-white mb-6 text-center">
           Select a Game
         </h3>
@@ -443,17 +443,17 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
   const teams = categoryStandings[selectedGame] || [];
 
   return (
-    <div className="w-full px-4 mb-6">
+    <div className="w-full mb-6 px-[5vw] md:px-[10vw]">
       <button
         onClick={() => setSelectedGame(null)}
-        className="flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
+        className="flex items-center gap-2 text-white/80 hover:text-white mb-3 md:mb-6 transition-colors"
       >
         <ChevronLeft size={20} />
         <span>Back to Games</span>
       </button>
 
-      <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-        <h3 className="text-2xl font-bold text-white mb-4 border-b border-white/20 pb-2">
+      <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 md:p-6 border border-white/20">
+        <h3 className="text-lg md:text-2xl font-bold text-white mb-4 border-b border-white/20 pb-2">
           {selectedGame}
         </h3>
 
@@ -496,19 +496,19 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
                         #{index + 1}
                       </span>
                       <div className="text-left">
-                        <p className="font-bold text-lg text-white">
+                        <p className="font-bold text-sm md:text-lg text-white">
                           {team.teamName}
                         </p>
-                        <p className="text-sm text-white/60 text-left line-clamp-1">
+                        <p className="text-[10px] md:text-sm text-white/60 text-left line-clamp-1">
                           {getParticipantsSimple(team.details)}
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-xl font-bold text-white">
+                      <p className="text-lg md:text-xl font-bold text-white">
                         {team.points}
                       </p>
-                      <p className="text-xs text-white/60 uppercase">Points</p>
+                      <p className="text-[10px] md:text-xs text-white/60 uppercase">Points</p>
                     </div>
                   </button>
                 </DialogTrigger>

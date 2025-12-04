@@ -134,7 +134,7 @@ const Podium = ({ topTeams }: PodiumProps) => {
 
                   {/* Podium Block - The wider, themed block */}
                   <div
-                    className={`w-full ${rankData.height} rounded-t-xl flex flex-col items-center justify-end p-3 md:p-5 ${rankData.ringColor} ${rankData.shadow} transform hover:scale-[1.03] transition-transform duration-200 cursor-pointer overflow-hidden relative
+                    className={`w-full ${rankData.height} h-40 rounded-t-xl flex flex-col items-center justify-end p-3 md:p-5 ${rankData.ringColor} ${rankData.shadow} transform hover:scale-[1.03] transition-transform duration-200 cursor-pointer overflow-hidden relative
                     drop-shadow-[0_0_1px_rgb(250,215,50)]`}
                   >
                     {/* BORDER DESIGNS */}
