@@ -1,41 +1,77 @@
 import type { Request, Response } from "express";
 import { supabase } from "../lib/supabaseClient.js"; // Updated Import
 import { logger } from "../utils/logger.js";
-import type { Player, CreatePlayerDto, UpdatePlayerDto } from "../types/player.js";
+import type {
+  Player,
+  CreatePlayerDto,
+  UpdatePlayerDto,
+} from "../types/player.js";
 
 // GET /api/player
 export const getPlayers = async (req: Request, res: Response) => {
   try {
-    const { team_name } = req.query;
+    const { team_name, search, page = 1, limit = 10 } = req.query;
+    const pageNum = Math.max(1, parseInt(page as string) || 1);
+    const limitNum = Math.max(1, parseInt(limit as string) || 10);
+    const offset = (pageNum - 1) * limitNum;
 
-    let query = supabase
+    let countQuery = supabase.from("player").select("id", { count: "exact" });
+    let dataQuery = supabase
       .from("player")
-      .select(`
+      .select(
+        `
         *,
         team:team_id ( name, section_represented )
-      `)
-      .order("full_name", { ascending: true });
+      `
+      )
+      .order("full_name", { ascending: true })
+      .range(offset, offset + limitNum - 1);
 
-    if (team_name && typeof team_name === 'string') {
-      // First find the team ID
+    // Filter by search query (name or CYS)
+    if (search && typeof search === "string") {
+      const searchTerm = `%${search}%`;
+      countQuery = countQuery.or(`full_name.ilike.${searchTerm},cys.ilike.${searchTerm}`);
+      dataQuery = dataQuery.or(`full_name.ilike.${searchTerm},cys.ilike.${searchTerm}`);
+    }
+
+    if (team_name && typeof team_name === "string") {
+      // Find teams by section_represented
       const { data: teamData, error: teamError } = await supabase
         .from("team")
         .select("id")
-        .eq("name", team_name)
-        .single();
+        .eq("section_represented", team_name);
 
-      if (teamError || !teamData) {
+      if (teamError || !teamData || teamData.length === 0) {
         // If team not found, return empty list
-        return res.json([]);
+        return res.json({
+          data: [],
+          meta: { total: 0, page: pageNum, limit: limitNum, totalPages: 0 },
+        });
       }
 
-      query = query.eq("team_id", teamData.id);
+      // Get all team IDs that match this section_represented
+      const teamIds = teamData.map((team) => team.id);
+
+      countQuery = countQuery.in("team_id", teamIds);
+      dataQuery = dataQuery.in("team_id", teamIds);
     }
 
-    const { data, error } = await query;
+    const { count } = await countQuery;
+    const { data, error } = await dataQuery;
 
     if (error) throw error;
-    res.json(data);
+
+    const totalPages = Math.ceil((count || 0) / limitNum);
+
+    res.json({
+      data,
+      meta: {
+        total: count || 0,
+        page: pageNum,
+        limit: limitNum,
+        totalPages,
+      },
+    });
   } catch (err: any) {
     logger.error("Failed to fetch players", err);
     res.status(500).json({ error: err.message || "Internal server error" });
@@ -51,10 +87,12 @@ export const getPlayerById = async (
     const { id } = req.params;
     const { data, error } = await supabase
       .from("player")
-      .select(`
+      .select(
+        `
         *,
         team:team_id ( name, section_represented )
-      `)
+      `
+      )
       .eq("id", id)
       .single();
 
@@ -82,10 +120,12 @@ export const createPlayer = async (
     const { data, error } = await supabase
       .from("player")
       .insert([{ full_name, cys, team_id }])
-      .select(`
+      .select(
+        `
         *,
         team:team_id ( name, section_represented )
-      `)
+      `
+      )
       .single();
 
     if (error) throw error;
@@ -109,10 +149,12 @@ export const updatePlayer = async (
       .from("player")
       .update({ full_name, cys, team_id })
       .eq("id", id)
-      .select(`
+      .select(
+        `
         *,
         team:team_id ( name, section_represented )
-      `)
+      `
+      )
       .single();
 
     if (error) throw error;
@@ -128,7 +170,7 @@ export const deletePlayer = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { error } = await supabase.from("player").delete().eq("id", id);
-    
+
     if (error) throw error;
     res.json({ message: "Player deleted successfully", data: { id } });
   } catch (err: any) {

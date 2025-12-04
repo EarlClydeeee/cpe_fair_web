@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useCategoryStandings, useAggregatedScores } from "@/hooks/useScore";
-import { usePlayers } from "@/hooks/usePlayers";
+import { usePlayers } from "@/hooks/usePlayer";
 import { GameCategory } from "@/types/game";
 import { ChevronLeft } from "lucide-react";
 import {
@@ -39,7 +39,6 @@ const pickBg = (name?: string | null) => {
   return undefined;
 };
 
-
 interface LeaderboardProps {
   selectedCategory: GameCategory | "Overall";
 }
@@ -51,7 +50,8 @@ export const TeamScoreModal = ({
   teamName: string;
   scores: any[];
 }) => {
-  const { data: players } = usePlayers(teamName);
+  const { data: playersData } = usePlayers(1, 100, teamName);
+  const players = playersData?.data || [];
 
   const getParticipants = (details: any) => {
     if (
@@ -127,7 +127,8 @@ const GamePlayersModal = ({
   gameName: string;
   details: any;
 }) => {
-  const { data: players } = usePlayers(teamName);
+  const { data: playersData } = usePlayers(1, 100, teamName);
+  const players = playersData?.data || [];
 
   const participants = useMemo(() => {
     if (
@@ -303,7 +304,10 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
                   </div>
                 </button>
               </DialogTrigger>
-              <TeamScoreModal teamName={team.section_team} scores={team.scores} />
+              <TeamScoreModal
+                teamName={team.section_team}
+                scores={team.scores}
+              />
             </Dialog>
           );
         })}

@@ -1,33 +1,43 @@
 "use client";
 
 import { useState } from "react";
-import { useGames, useCreateGame, useUpdateGame, useDeleteGame } from "@/hooks/useGame";
-import { Activity, Plus, ArrowUpDown, Filter } from "lucide-react";
+import {
+  useGames,
+  useCreateGame,
+  useUpdateGame,
+  useDeleteGame,
+} from "@/hooks/useGame";
+import { Plus, ArrowUpDown, Filter } from "lucide-react";
 import GameModal from "@/components/admin/GameModal";
 import GameCard from "@/components/admin/GameCard";
 import { CreateGameDto, Game } from "@/types/game";
 
 export default function GamesPage() {
   // 1. Add State for Sorting
-  const [sortBy, setSortBy] = useState<'name' | 'category'>('name');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [selectedType, setSelectedType] = useState<string>('All');
+  const [sortBy, setSortBy] = useState<"name" | "category">("name");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [selectedType, setSelectedType] = useState<string>("All");
 
   // 2. Pass state to the hook (This triggers the API call automatically when state changes)
-  const isGroup = selectedType === 'All' ? undefined : selectedType === 'Party';
-  const { data: games, isLoading } = useGames(sortBy, sortOrder, selectedCategory, isGroup);
+  const isGroup = selectedType === "All" ? undefined : selectedType === "Party";
+  const { data: games, isLoading } = useGames(
+    sortBy,
+    sortOrder,
+    selectedCategory,
+    isGroup
+  );
 
   const createGameMutation = useCreateGame();
   const updateGameMutation = useUpdateGame();
   const deleteGameMutation = useDeleteGame();
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingGame, setEditingGame] = useState<Game | null>(null);
 
   // Toggle Order Function
   const toggleOrder = () => {
-    setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+    setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
   };
 
   // Handle Create or Update Game
@@ -67,15 +77,11 @@ export default function GamesPage() {
   };
 
   return (
-    <div className="lg:col-span-3">
-      {/* HEADER SECTION */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <h2 className="text-lg font-bold text-[#ece5d8] flex items-center gap-2 font-serif tracking-wide">
-          <Activity size={20} className="text-[#d3bc8e]" />
-          Active Games
-        </h2>
-
-        {/* 3. SORT CONTROLS UI */}
+    <>
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="text-3xl font-bold text-[#ece5d8]">Manage Games</h1>
+        
+        {/* SORT CONTROLS */}
         <div className="flex items-center gap-2 bg-[#1e2130]/50 p-1 rounded-lg border border-[#d3bc8e]/20">
           <div className="flex items-center px-2 gap-2 border-r border-[#d3bc8e]/10">
             <Filter size={14} className="text-[#8a8d99]" />
@@ -107,14 +113,16 @@ export default function GamesPage() {
           <div className="flex items-center px-2 gap-2 border-r border-[#d3bc8e]/10">
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as 'name' | 'category')}
+              onChange={(e) =>
+                setSortBy(e.target.value as "name" | "category")
+              }
               className="bg-transparent text-sm text-[#ece5d8] outline-none cursor-pointer [&>option]:bg-[#1e2130]"
             >
               <option value="name">Name</option>
               <option value="category">Category</option>
             </select>
           </div>
-          
+
           <button
             onClick={toggleOrder}
             className="p-1.5 hover:bg-[#d3bc8e]/10 rounded-md transition-colors text-[#d3bc8e] flex items-center gap-1 text-xs font-medium uppercase"
@@ -124,47 +132,55 @@ export default function GamesPage() {
           </button>
         </div>
       </div>
+      <div className="lg:col-span-3 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {isLoading ? (
+            <div className="col-span-full text-center text-[#8a8d99] py-8">
+              Loading games...
+            </div>
+          ) : (
+            <>
+              {games?.map((game) => (
+                <GameCard
+                  key={game.id}
+                  game={game}
+                  onEdit={handleOpenEdit}
+                  onDelete={handleDelete}
+                />
+              ))}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {isLoading ? (
-          <div className="col-span-full text-center text-[#8a8d99] py-8">
-            Loading games...
-          </div>
-        ) : (
-          <>
-            {games?.map((game) => (
-              <GameCard 
-                key={game.id} 
-                game={game} 
-                onEdit={handleOpenEdit} 
-                onDelete={handleDelete} 
-              />
-            ))}
-            
-            {/* ... (Keep your existing Add Button) ... */}
-            <button 
-              onClick={() => {
-                setEditingGame(null);
-                setIsModalOpen(true);
-              }}
-              className="bg-[#1e2130]/40 border-2 border-dashed border-[#d3bc8e]/30 rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-[#d3bc8e]/10 hover:border-[#d3bc8e]/60 transition-all group min-h-[100px]"
-            >
-              <div className="w-10 h-10 rounded-full bg-[#d3bc8e]/10 flex items-center justify-center group-hover:bg-[#d3bc8e] transition-colors">
-                <Plus size={24} className="text-[#d3bc8e] group-hover:text-[#1e2130]" />
-              </div>
-              <span className="text-[#8a8d99] font-bold text-sm uppercase tracking-wider group-hover:text-[#ece5d8]">Add Game</span>
-            </button>
-          </>
-        )}
+              {/* ... (Keep your existing Add Button) ... */}
+              <button
+                onClick={() => {
+                  setEditingGame(null);
+                  setIsModalOpen(true);
+                }}
+                className="bg-[#1e2130]/40 border-2 border-dashed border-[#d3bc8e]/30 rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-[#d3bc8e]/10 hover:border-[#d3bc8e]/60 transition-all group min-h-[100px]"
+              >
+                <div className="w-10 h-10 rounded-full bg-[#d3bc8e]/10 flex items-center justify-center group-hover:bg-[#d3bc8e] transition-colors">
+                  <Plus
+                    size={24}
+                    className="text-[#d3bc8e] group-hover:text-[#1e2130]"
+                  />
+                </div>
+                <span className="text-[#8a8d99] font-bold text-sm uppercase tracking-wider group-hover:text-[#ece5d8]">
+                  Add Game
+                </span>
+              </button>
+            </>
+          )}
+        </div>
+
+        <GameModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onSubmit={handleCreateOrUpdateGame}
+          isLoading={
+            createGameMutation.isPending || updateGameMutation.isPending
+          }
+          initialData={editingGame}
+        />
       </div>
-
-      <GameModal 
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSubmit={handleCreateOrUpdateGame}
-        isLoading={createGameMutation.isPending || updateGameMutation.isPending}
-        initialData={editingGame}
-      />
-    </div>
+    </>
   );
 }

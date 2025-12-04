@@ -1,4 +1,4 @@
-import { Score } from "../../services/score.service";
+import { Score } from "@/types/score";
 // Restoring original imports for regional backgrounds
 import FontaineBG from "@/assets/images/backgrounds/fontaine.jpg";
 import InazumaBG from "@/assets/images/backgrounds/inazuma.jpg";
@@ -9,8 +9,7 @@ import SumeruBG from "@/assets/images/backgrounds/sumeru.jpg";
 import SnezhnayaBG from "@/assets/images/backgrounds/snezhnaya.jpg";
 
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { TeamScoreModal } from "./Leaderboard";
-import { text } from "stream/consumers";
+import { TeamScoreModal } from "./leaderboard";
 
 // Restoring the original BG_MAP using .src properties
 const BG_MAP: Record<string, string> = {
