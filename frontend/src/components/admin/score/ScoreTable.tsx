@@ -236,7 +236,7 @@ export default function ScoreTable() {
       </div>
 
       {/* Pagination Footer */}
-      <div className="p-4 border-t border-[#3b3f54] bg-[#161822] flex justify-between items-center">
+      <div className="p-4 border-t border-[#3b3f54] bg-[#161822] flex justify-center items-center">
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
           disabled={page === 1}
