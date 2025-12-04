@@ -1,27 +1,30 @@
-@font-face {
-  font-family: "Formula1-Regular";
-  src: url("./assets/fonts/Formula1-Regular.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
+/* Starry background animation */
+@keyframes twinkle {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
 }
 
-@font-face {
-  font-family: "Formula1-Bold";
-  src: url("./assets/fonts/Formula1-Bold.otf") format("opentype");
-  font-weight: bold;
-  font-style: normal;
+.stars {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, white, transparent),
+    radial-gradient(2px 2px at 60px 70px, white, transparent),
+    radial-gradient(1px 1px at 50px 50px, white, transparent),
+    radial-gradient(1px 1px at 130px 80px, white, transparent),
+    radial-gradient(2px 2px at 90px 10px, white, transparent);
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: twinkle 3s ease-in-out infinite;
 }
 
-@font-face {
-  font-family: "Formula1-Wide";
-  src: url("./assets/fonts/Formula1-Wide.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Protipo-Icons";
-  src: url("./assets/fonts/TypeTogether-Protipo-Icons.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
+.sparkles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.8) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: twinkle 2s ease-in-out infinite alternate;
 }
