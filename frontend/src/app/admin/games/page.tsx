@@ -7,7 +7,7 @@ import {
   useUpdateGame,
   useDeleteGame,
 } from "@/hooks/useGame";
-import { Activity, Plus, ArrowUpDown, Filter } from "lucide-react";
+import { Plus, ArrowUpDown, Filter } from "lucide-react";
 import GameModal from "@/components/admin/GameModal";
 import GameCard from "@/components/admin/GameCard";
 import { CreateGameDto, Game } from "@/types/game";
@@ -78,66 +78,61 @@ export default function GamesPage() {
 
   return (
     <>
-      <div className="lg:col-span-3 relative z-10">
-        {/* HEADER SECTION */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-          <h2 className="text-lg font-bold text-[#ece5d8] flex items-center gap-2 font-serif tracking-wide">
-            <Activity size={20} className="text-[#d3bc8e]" />
-            Active Games
-          </h2>
-
-          {/* 3. SORT CONTROLS UI */}
-          <div className="flex items-center gap-2 bg-[#1e2130]/50 p-1 rounded-lg border border-[#d3bc8e]/20">
-            <div className="flex items-center px-2 gap-2 border-r border-[#d3bc8e]/10">
-              <Filter size={14} className="text-[#8a8d99]" />
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="bg-transparent text-sm text-[#ece5d8] outline-none cursor-pointer [&>option]:bg-[#1e2130]"
-              >
-                <option value="All">All Categories</option>
-                <option value="Sports">Sports</option>
-                <option value="Board">Board</option>
-                <option value="Quiz Bee">Quiz Bee</option>
-                <option value="Esports">Esports</option>
-                <option value="Talents">Talents</option>
-                <option value="Mini Games">Mini Games</option>
-              </select>
-            </div>
-            <div className="flex items-center px-2 gap-2 border-r border-[#d3bc8e]/10">
-              <select
-                value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value)}
-                className="bg-transparent text-sm text-[#ece5d8] outline-none cursor-pointer [&>option]:bg-[#1e2130]"
-              >
-                <option value="All">All Types</option>
-                <option value="Solo">Solo</option>
-                <option value="Party">Party</option>
-              </select>
-            </div>
-            <div className="flex items-center px-2 gap-2 border-r border-[#d3bc8e]/10">
-              <select
-                value={sortBy}
-                onChange={(e) =>
-                  setSortBy(e.target.value as "name" | "category")
-                }
-                className="bg-transparent text-sm text-[#ece5d8] outline-none cursor-pointer [&>option]:bg-[#1e2130]"
-              >
-                <option value="name">Name</option>
-                <option value="category">Category</option>
-              </select>
-            </div>
-
-            <button
-              onClick={toggleOrder}
-              className="p-1.5 hover:bg-[#d3bc8e]/10 rounded-md transition-colors text-[#d3bc8e] flex items-center gap-1 text-xs font-medium uppercase"
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="text-3xl font-bold text-[#ece5d8]">Manage Games</h1>
+        
+        {/* SORT CONTROLS */}
+        <div className="flex items-center gap-2 bg-[#1e2130]/50 p-1 rounded-lg border border-[#d3bc8e]/20">
+          <div className="flex items-center px-2 gap-2 border-r border-[#d3bc8e]/10">
+            <Filter size={14} className="text-[#8a8d99]" />
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="bg-transparent text-sm text-[#ece5d8] outline-none cursor-pointer [&>option]:bg-[#1e2130]"
             >
-              {sortOrder}
-              <ArrowUpDown size={14} />
-            </button>
+              <option value="All">All Categories</option>
+              <option value="Sports">Sports</option>
+              <option value="Board">Board</option>
+              <option value="Quiz Bee">Quiz Bee</option>
+              <option value="Esports">Esports</option>
+              <option value="Talents">Talents</option>
+              <option value="Mini Games">Mini Games</option>
+            </select>
           </div>
-        </div>
+          <div className="flex items-center px-2 gap-2 border-r border-[#d3bc8e]/10">
+            <select
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              className="bg-transparent text-sm text-[#ece5d8] outline-none cursor-pointer [&>option]:bg-[#1e2130]"
+            >
+              <option value="All">All Types</option>
+              <option value="Solo">Solo</option>
+              <option value="Party">Party</option>
+            </select>
+          </div>
+          <div className="flex items-center px-2 gap-2 border-r border-[#d3bc8e]/10">
+            <select
+              value={sortBy}
+              onChange={(e) =>
+                setSortBy(e.target.value as "name" | "category")
+              }
+              className="bg-transparent text-sm text-[#ece5d8] outline-none cursor-pointer [&>option]:bg-[#1e2130]"
+            >
+              <option value="name">Name</option>
+              <option value="category">Category</option>
+            </select>
+          </div>
 
+          <button
+            onClick={toggleOrder}
+            className="p-1.5 hover:bg-[#d3bc8e]/10 rounded-md transition-colors text-[#d3bc8e] flex items-center gap-1 text-xs font-medium uppercase"
+          >
+            {sortOrder}
+            <ArrowUpDown size={14} />
+          </button>
+        </div>
+      </div>
+      <div className="lg:col-span-3 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {isLoading ? (
             <div className="col-span-full text-center text-[#8a8d99] py-8">
