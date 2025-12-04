@@ -1,12 +1,21 @@
-import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
-import { scoreService, SectionTeamScoreResponse, Score } from "../services/score.service";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  keepPreviousData,
+} from "@tanstack/react-query";
+import {
+  scoreService,
+  SectionTeamScoreResponse,
+} from "../services/score.service";
+import { Score, CreateScoreDto, UpdateScoreDto } from "../types/score";
 
 export const SCORE_KEYS = {
   all: ["scores"] as const,
   aggregated: ["scores", "aggregated"] as const,
   sectionTeam: (team: string) => ["scores", "sectionTeam", team] as const,
-  categoryStandings: (category: string) => ["scores", "categoryStandings", category] as const,
-
+  categoryStandings: (category: string) =>
+    ["scores", "categoryStandings", category] as const,
 };
 
 export const useScores = (page: number = 1, limit: number = 10) => {
@@ -44,7 +53,7 @@ export const useCreateScore = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: any) => scoreService.createScore(data),
+    mutationFn: (data: CreateScoreDto) => scoreService.createScore(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: SCORE_KEYS.all });
       queryClient.invalidateQueries({ queryKey: SCORE_KEYS.aggregated });
@@ -56,7 +65,8 @@ export const useUpdateScore = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string | number, data: any) => scoreService.updateScore(id, data),
+    mutationFn: ({ id, data }: { id: string | number; data: UpdateScoreDto }) =>
+      scoreService.updateScore(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: SCORE_KEYS.all });
       queryClient.invalidateQueries({ queryKey: SCORE_KEYS.aggregated });
