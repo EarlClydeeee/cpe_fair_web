@@ -37,8 +37,8 @@ export default function EditPlayerModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.full_name.trim() || !formData.cys.trim()) {
-      toast.error("Player name and CYS are required");
+    if (!formData.full_name.trim()) {
+      toast.error("Player name is required");
       return;
     }
 
@@ -47,8 +47,7 @@ export default function EditPlayerModal({
         id: player.id,
         data: {
           full_name: formData.full_name,
-          cys: formData.cys,
-          teamId: formData.teamId || null,
+          // CYS and teamId are read-only, don't update them
         },
       });
       setOpen(false);
@@ -97,7 +96,7 @@ export default function EditPlayerModal({
             />
           </div>
 
-          {/* CYS */}
+          {/* CYS (Read-only) */}
           <div>
             <label className="text-xs font-bold text-[#8a8d99] uppercase tracking-wider mb-2 block text-left">
               CYS
@@ -105,27 +104,22 @@ export default function EditPlayerModal({
             <input
               type="text"
               value={formData.cys}
-              onChange={(e) =>
-                setFormData({ ...formData, cys: e.target.value })
-              }
-              className="w-full bg-[#161822] border border-[#3b3f54] focus:border-[#d3bc8e] rounded-xl py-3 px-4 text-[#ece5d8] outline-none transition-colors"
+              disabled
+              className="w-full bg-[#0c0e16] border border-[#3b3f54] rounded-xl py-3 px-4 text-[#8a8d99] outline-none cursor-not-allowed opacity-60"
               placeholder="e.g., 1st Year - A Section"
             />
           </div>
 
-          {/* Team ID (Optional) */}
+          {/* Team (Read-only) */}
           <div>
             <label className="text-xs font-bold text-[#8a8d99] uppercase tracking-wider mb-2 block text-left">
-              Team ID (Optional)
+              Team / Section
             </label>
             <input
               type="text"
-              value={formData.teamId}
-              onChange={(e) =>
-                setFormData({ ...formData, teamId: e.target.value })
-              }
-              className="w-full bg-[#161822] border border-[#3b3f54] focus:border-[#d3bc8e] rounded-xl py-3 px-4 text-[#ece5d8] outline-none transition-colors"
-              placeholder="Team ID (leave empty for unassigned)"
+              value={player.teamName ? `${player.teamName} (${player.sectionRepresented})` : "Unassigned"}
+              disabled
+              className="w-full bg-[#0c0e16] border border-[#3b3f54] rounded-xl py-3 px-4 text-[#8a8d99] outline-none cursor-not-allowed opacity-60"
             />
           </div>
 
