@@ -246,7 +246,7 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
     );
     
     return (
-      <div className="w-full px-4 flex flex-col gap-4 mb-6">
+      <div className="w-full px-4 flex flex-col gap-4 mb-6 max-w-[80vw]">
         <h2 className="text-2xl font-bold text-white text-center mb-4">
           Overall Leaderboard
         </h2>
@@ -329,7 +329,7 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
   // View 1: List of Games
   if (!selectedGame) {
     return (
-      <div className="w-full px-4 mb-6">
+      <div className="w-full px-4 mb-6 max-w-[80vw]">
         <h3 className="text-2xl font-bold text-white mb-6 text-center">
           Select a Game
         </h3>
@@ -446,7 +446,7 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
   const teams = categoryStandings[selectedGame] || [];
 
   return (
-    <div className="w-full px-4 mb-6">
+    <div className="w-full px-4 mb-6 max-w-[80vw]">
       <button
         onClick={() => setSelectedGame(null)}
         className="flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"

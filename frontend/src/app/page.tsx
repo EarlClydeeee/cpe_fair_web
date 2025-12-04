@@ -35,7 +35,7 @@ export default function Home() {
       {/* Main Logo */}
       <MainLogoArchon />
 
-      <div className="w-full flex flex-col gap-4">
+      <div className="w-full flex flex-col gap-4 justify-center items-center">
         <CategoriesBar
           selectedCategory={selectedCategory}
           onSelect={setSelectedCategory}
