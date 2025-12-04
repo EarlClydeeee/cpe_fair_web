@@ -133,7 +133,7 @@ export default function LogScoreModal({ trigger }: LogScoreModalProps) {
               >
                 {teams.map((t: Team) => (
                   <option key={t.id} value={t.id}>
-                    {t.name}
+                    {t.name} <span className="text-xs text-[#4f5364]">({t.section_represented})</span>
                   </option>
                 ))}
               </select>

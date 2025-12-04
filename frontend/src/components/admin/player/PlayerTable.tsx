@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { usePlayers, useDeletePlayer } from "@/hooks/usePlayer";
 import { ChevronLeft, ChevronRight, Users, Trash2 } from "lucide-react";
 import { format } from "date-fns";
@@ -14,14 +14,54 @@ import {
 import { Player } from "@/types/player";
 import EditPlayerModal from "./EditPlayerModal";
 
-export default function PlayerTable() {
+interface PlayerTableProps {
+  sortBy?: "full_name" | "cys" | "teamName";
+  sortOrder?: "asc" | "desc";
+  teamFilter?: string;
+  search?: string;
+}
+
+export default function PlayerTable({ sortBy = "full_name", sortOrder = "asc", teamFilter = "All", search = "" }: PlayerTableProps) {
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  const { data, isLoading, isPlaceholderData } = usePlayers(page, limit);
+  // Pass team filter and search to backend (server-side filtering)
+  const teamNameFilter = teamFilter === "All" ? undefined : teamFilter;
+  const searchQuery = search.trim() || undefined;
+  const { data, isLoading, isPlaceholderData } = usePlayers(page, limit, teamNameFilter, searchQuery);
   const deletePlayer = useDeletePlayer();
-  const players = data?.data || [];
+  const playersData = data?.data || [];
   const meta = data?.meta;
+
+  // Reset to page 1 when search or team filter changes
+  useEffect(() => {
+    setPage(1);
+  }, [teamFilter, search]);
+
+  // Sort players based on sortBy and sortOrder (client-side sorting)
+  const players = useMemo(() => {
+    const sorted = [...playersData].sort((a, b) => {
+      let aValue = "";
+      let bValue = "";
+
+      if (sortBy === "full_name") {
+        aValue = a.full_name || "";
+        bValue = b.full_name || "";
+      } else if (sortBy === "cys") {
+        aValue = a.cys || "";
+        bValue = b.cys || "";
+      } else if (sortBy === "teamName") {
+        // Sort by section_represented instead of team name
+        aValue = a.sectionRepresented || "";
+        bValue = b.sectionRepresented || "";
+      }
+
+      const comparison = aValue.localeCompare(bValue);
+      return sortOrder === "asc" ? comparison : -comparison;
+    });
+
+    return sorted;
+  }, [playersData, sortBy, sortOrder]);
 
   const columnHelper = createColumnHelper<Player>();
 
@@ -41,6 +81,7 @@ export default function PlayerTable() {
         cell: (info) => (
           <span className="text-[#ece5d8]">{info.getValue()}</span>
         ),
+        meta: { align: "center" },
       }),
 
       // 3. TEAM
@@ -58,6 +99,7 @@ export default function PlayerTable() {
             )}
           </div>
         ),
+        meta: { align: "center" },
       }),
 
       // 4. CREATED DATE
@@ -68,7 +110,7 @@ export default function PlayerTable() {
             {format(new Date(info.getValue()), "MMM d, HH:mm")}
           </span>
         ),
-        meta: { align: "right" },
+        meta: { align: "center" },
       }),
 
       // 5. ACTIONS (Edit & Delete)
@@ -101,7 +143,7 @@ export default function PlayerTable() {
             </div>
           );
         },
-        meta: { align: "right" },
+        meta: { align: "center" },
       }),
     ],
     [columnHelper]
@@ -197,7 +239,7 @@ export default function PlayerTable() {
       </div>
 
       {/* Pagination Footer */}
-      <div className="p-4 border-t border-[#3b3f54] bg-[#161822]/60 backdrop-blur-sm flex justify-between items-center">
+      <div className="p-4 border-t border-[#3b3f54] bg-[#161822]/60 backdrop-blur-sm flex justify-center items-center">
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
           disabled={page === 1}
