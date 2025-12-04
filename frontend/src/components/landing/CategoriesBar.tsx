@@ -64,7 +64,7 @@ const CategoriesBar = ({ selectedCategory, onSelect }: CategoriesBarProps) => {
         <button
           key={index}
           onClick={() => onSelect(category.value)}
-          className={`w-35 flex justify-center items-center flex-col transition-all duration-300 ${
+          className={`w-20 flex justify-center items-center flex-col transition-all duration-300 bg-position-[center_-10px] md:bg-position-[center_-15px] md:w-35 ${
             selectedCategory === category.value
               ? "hover:drop-shadow-[0_0_1px_rgb(255,215,50)] drop-shadow-[0_0_1px_rgb(250,215,50)]" 
               : "opacity-50 hover:opacity-100"
@@ -72,11 +72,10 @@ const CategoriesBar = ({ selectedCategory, onSelect }: CategoriesBarProps) => {
           style={{
             backgroundImage: `url(${Banner.src})`,
             backgroundSize: "cover",
-            backgroundPosition: "center -20px",
           }}
         >
           {category.logo && <img src={category.logo} alt={category.name} loading="lazy" />}
-          <span className="text-center">{category.name}</span>
+          <span className="text-[10px] text-center md:text-base">{category.name}</span>
         </button>
       ))}
     </div>

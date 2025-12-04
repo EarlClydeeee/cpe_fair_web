@@ -250,7 +250,7 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
                 .slice(0, 3);
     
     return (
-      <div className="w-full px-40 flex flex-col gap-4 mb-6">
+      <div className="w-full px-[5vw] md:px-[10vw] flex flex-col gap-4 mb-6">
         <h2 className="text-2xl font-bold text-white text-center">
           Overall Leaderboard
         </h2>
@@ -278,26 +278,26 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
                       : "border-white/20"
                   }`}
                 >
-                  <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-3 md:gap-6">
                     <span
-                      className={`text-3xl font-bold w-12 text-center text-white/60`}
+                      className={`text-lg md:text-3xl font-bold w-12 text-center text-white/60`}
                     >
                       #{index + 4}
                     </span>
                     <div className="text-left">
-                      <h3 className="text-2xl font-bold text-white">
+                      <h3 className="text-md md:text-2xl font-bold text-white">
                         {team.section_team}
                       </h3>
-                      <p className="text-white/60">
+                      <p className="text-white/60 text-sm md:text-2xl">
                         {team.scores.length} Games Played
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-3xl font-bold text-white">
+                    <p className="text-lg md:text-3xl font-bold text-white">
                       {team.totalPoints.toLocaleString()}
                     </p>
-                    <p className="text-sm text-white/60 uppercase tracking-wider">
+                    <p className="text-[10px] md:text-sm text-white/60 uppercase tracking-wider">
                       Total Points
                     </p>
                   </div>
@@ -326,7 +326,7 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
   // View 1: List of Games
   if (!selectedGame) {
     return (
-      <div className="w-full px-4 mb-6">
+      <div className="w-full px-[8vh] mb-6">
         <h3 className="text-2xl font-bold text-white mb-6 text-center">
           Select a Game
         </h3>
