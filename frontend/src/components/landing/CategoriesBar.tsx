@@ -58,8 +58,15 @@ const CategoriesBar = ({ selectedCategory, onSelect }: CategoriesBarProps) => {
     },
   ];
 
+  return (
+    <div className="text-white flex flex-wrap justify-center gap-6 px-2 py-4">
+      {categories.map((category, index) => (
+        <button
+          key={index}
           onClick={() => onSelect(category.value)}
           className={`w-35 flex justify-center items-center flex-col transition-all duration-300 ${
+            selectedCategory === category.value
+              ? "hover:drop-shadow-[0_0_1px_rgb(255,215,50)] drop-shadow-[0_0_1px_rgb(250,215,50)]" 
               : "opacity-50 hover:opacity-100"
           }`}
           style={{
