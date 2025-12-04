@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useCategoryStandings, useAggregatedScores } from "@/hooks/useScore";
-import { usePlayers } from "@/hooks/usePlayers";
+import { usePlayers } from "@/hooks/usePlayer";
 import { GameCategory } from "@/types/game";
 import { ChevronLeft } from "lucide-react";
 import {
@@ -38,7 +38,6 @@ const pickBg = (name?: string | null) => {
   return undefined;
 };
 
-
 interface LeaderboardProps {
   selectedCategory: GameCategory | "Overall";
 }
@@ -50,7 +49,8 @@ const TeamScoreModal = ({
   teamName: string;
   scores: any[];
 }) => {
-  const { data: players } = usePlayers(teamName);
+  const { data: playersData } = usePlayers(1, 100, teamName);
+  const players = playersData?.data || [];
 
   const getParticipants = (details: any) => {
     if (
@@ -126,7 +126,8 @@ const GamePlayersModal = ({
   gameName: string;
   details: any;
 }) => {
-  const { data: players } = usePlayers(teamName);
+  const { data: playersData } = usePlayers(1, 100, teamName);
+  const players = playersData?.data || [];
 
   const participants = useMemo(() => {
     if (
@@ -244,7 +245,7 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
     const sortedTeams = [...aggregatedScores].sort(
       (a, b) => b.totalPoints - a.totalPoints
     );
-    
+
     return (
       <div className="w-full px-4 flex flex-col gap-4 mb-6 max-w-[80vw]">
         <h2 className="text-2xl font-bold text-white text-center mb-4">
@@ -257,7 +258,9 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
               <DialogTrigger asChild>
                 <button
                   style={{
-                    backgroundImage: bg ? `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${bg})` : undefined,
+                    backgroundImage: bg
+                      ? `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${bg})`
+                      : undefined,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}
@@ -306,7 +309,10 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
                   </div>
                 </button>
               </DialogTrigger>
-              <TeamScoreModal teamName={team.section_team} scores={team.scores} />
+              <TeamScoreModal
+                teamName={team.section_team}
+                scores={team.scores}
+              />
             </Dialog>
           );
         })}
@@ -400,27 +406,42 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
 
               {/* Game title */}
               <div className="flex items-center justify-center mb-6 w-full">
-                        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent max-w-16"></div>
-                        <h3 className={`text-2xl text-yellow-400 font-bold text-center mx-4 bg-gradient-to-r bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300`} style={{
-                          textShadow: '0 0 5px rgba(251, 191, 36, 0.6)',
-                        }}>
-                          {gameName}
-                        </h3>
-                        <div className="flex-1 h-px bg-gradient-to-l from-transparent via-amber-500/50 to-transparent max-w-16"></div>
-                      </div>
+                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent max-w-16"></div>
+                <h3
+                  className={`text-2xl text-yellow-400 font-bold text-center mx-4 bg-gradient-to-r bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300`}
+                  style={{
+                    textShadow: "0 0 5px rgba(251, 191, 36, 0.6)",
+                  }}
+                >
+                  {gameName}
+                </h3>
+                <div className="flex-1 h-px bg-gradient-to-l from-transparent via-amber-500/50 to-transparent max-w-16"></div>
+              </div>
 
               {/* Center Icon/ View Rankings Icon */}
-                      <div className="flex flex-col items-center justify-center text-amber-300 space-y-3 my-6">
-                        <div className="relative">
-                          <div className="absolute inset-0 bg-amber-400/20 blur-xl group-hover:bg-amber-400/40 transition-all duration-300"></div>
-                          <div className="relative w-16 h-16 border-2 border-amber-500/70 group-hover:border-amber-400 flex items-center justify-center transition-all duration-300 bg-gradient-to-br from-[#2a2f4a] to-[#1a1f3a]">
-                            <svg className="w-8 h-8 text-amber-400 group-hover:text-amber-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                          </div>
-                        </div>
-                        <p className="text-xs text-amber-400/80 group-hover:text-amber-300 transition-colors uppercase tracking-wider">View Rankings</p>
-                      </div>
+              <div className="flex flex-col items-center justify-center text-amber-300 space-y-3 my-6">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-amber-400/20 blur-xl group-hover:bg-amber-400/40 transition-all duration-300"></div>
+                  <div className="relative w-16 h-16 border-2 border-amber-500/70 group-hover:border-amber-400 flex items-center justify-center transition-all duration-300 bg-gradient-to-br from-[#2a2f4a] to-[#1a1f3a]">
+                    <svg
+                      className="w-8 h-8 text-amber-400 group-hover:text-amber-300 transition-colors"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <p className="text-xs text-amber-400/80 group-hover:text-amber-300 transition-colors uppercase tracking-wider">
+                  View Rankings
+                </p>
+              </div>
 
               {/* Bottom ornamental dots */}
               <div className="flex gap-2 mt-4 justify-center">
@@ -475,14 +496,12 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
                         : index === 2
                         ? "bg-orange-700/20 border-orange-700/50 hover:bg-orange-700/30"
                         : "bg-white/5 border-transparent hover:bg-white/10"
-                        
-                    }`
-                  }
-                  style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url(${bg})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
+                    }`}
+                    style={{
+                      backgroundImage: `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url(${bg})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
                   >
                     <div className="flex items-center gap-4">
                       <span
