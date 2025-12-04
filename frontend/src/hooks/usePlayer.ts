@@ -6,11 +6,12 @@ import { Player, CreatePlayerDto, UpdatePlayerDto } from "@/types/player";
 export const usePlayers = (
   page: number = 1,
   limit: number = 10,
-  teamName?: string
+  teamName?: string,
+  search?: string
 ) => {
   return useQuery({
-    queryKey: ["players", page, limit, teamName],
-    queryFn: () => playerService.getPlayers(page, limit, teamName),
+    queryKey: ["players", page, limit, teamName, search],
+    queryFn: () => playerService.getPlayers(page, limit, teamName, search),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 };
