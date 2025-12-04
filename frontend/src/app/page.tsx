@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 import MainLogo from "@/assets/images/logos/archons_logo.svg";
-import CategoriesBar from "@/components/landing/categories_bar";
+import CategoriesBar from "@/components/landing/CategoriesBar";
 import Leaderboard from "@/components/landing/leaderboard";
 import MainLogoArchon from "@/components/MainLogo";
 
@@ -35,7 +35,7 @@ export default function Home() {
       {/* Main Logo */}
       <MainLogoArchon />
 
-      <div className="w-full flex flex-col gap-4 justify-center items-center">
+      <div className="w-full flex flex-col gap-4">
         <CategoriesBar
           selectedCategory={selectedCategory}
           onSelect={setSelectedCategory}
