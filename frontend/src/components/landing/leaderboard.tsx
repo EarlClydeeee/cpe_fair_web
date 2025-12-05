@@ -83,7 +83,7 @@ export const TeamScoreModal = ({
 
   const bg=pickBg(teamName);
   return (
-    <DialogContent className="max-w-2xl max-h-[80vh] bg-[#2a2640]/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 text-white" 
+    <DialogContent className="max-w-[90%] sm:max-w-md max-h-[80vh] bg-[#2a2640]/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 text-white" 
       style={{
                       backgroundImage: `linear-gradient(rgba(0,0,0,0.30), rgba(0,0,0,0.30)), url(${bg})`,
                       backgroundSize: "cover",
@@ -108,9 +108,9 @@ export const TeamScoreModal = ({
                 className="p-4 rounded-lg border border-white/10 flex justify-between items-center bg-linear-to-br from-[#FEF4BF]/30 to-transparent"
               >
                 <div>
-                  <p className="font-bold text-lg text-white">{score.game}</p>
-                  <div className="flex flex-col gap-1 text-sm text-white/60">
-                    <span className="bg-white/10 px-2 py-0.5 rounded text-xs w-fit">
+                  <p className="font-bold text-sm md:text-lg text-white">{score.game}</p>
+                  <div className="flex flex-col gap-1 text-[10px] md:text-sm text-white/60">
+                    <span className="bg-white/10 px-2 py-0.5 rounded text-[8px] md:text-xs w-fit">
                       {score.category}
                     </span>
                     <span className="text-white/80">
@@ -122,7 +122,7 @@ export const TeamScoreModal = ({
                   <p className="font-bold text-xl text-white/10 text-transparent bg-clip-text bg-linear-to-b from-[#f0e6d2] via-[#d3bc8e] to-[#9d8f6f]">
                     {score.points}
                   </p>
-                  <p className="text-xs text-white/40">Points</p>
+                  <p className="text-[8px] md:text-xs text-white/40">Points</p>
                 </div>
               </div>
             ))}
@@ -178,7 +178,7 @@ const GamePlayersModal = ({
 
   const bg=pickBg(teamName);
   return (
-    <DialogContent className="max-w-md max-h-[80vh] bg-[#2a2640]/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 text-white" 
+    <DialogContent className="max-w-[90%] sm:max-w-md max-h-[80vh] bg-[#2a2640]/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 text-white" 
       style={{
                       backgroundImage: `linear-gradient(rgba(0,0,0,0.30), rgba(0,0,0,0.30)), url(${bg})`,
                       backgroundSize: "cover",
@@ -546,7 +546,6 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
       </button>
 
       <div className="bg-white/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 backdrop-blur-md rounded-xl p-4 md:p-6 border border-white/20">
-      <StarryBackground starCount={75} />
         <h3 className="text-lg md:text-2xl font-bold text-white/10 mb-4 border-b border-white/20 pb-2 text-transparent bg-clip-text bg-linear-to-b from-[#f0e6d2] via-[#d3bc8e] to-[#9d8f6f] drop-shadow-[0_0_30px_rgba(211,188,142,0.8)]">
           {selectedGame}
         </h3>
