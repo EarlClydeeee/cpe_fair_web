@@ -360,7 +360,7 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
               key={game.id}
               onClick={() => setSelectedGame(game.name)}
                  className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 bg-linear-to-b from-[#2a2640]/60 to-[#1a1630]/70
-                          transition-all duration-300 group text-left
+                          transition-all duration-300 group text-left"
             >
               {/* BORDER DESIGNS */}
               <div
