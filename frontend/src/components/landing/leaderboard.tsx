@@ -247,9 +247,8 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
       (a, b) => b.totalPoints - a.totalPoints
     );
 
-    const topThree = [...sortedTeams]
-                .slice(0, 3);
-    
+    const topThree = [...sortedTeams].slice(0, 3);
+
     return (
       <div className="w-full px-[5vw] md:px-[10vw] flex flex-col gap-4 mb-6">
         <h2 className="text-2xl font-bold text-white text-center">
@@ -263,7 +262,9 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
               <DialogTrigger asChild>
                 <button
                   style={{
-                    backgroundImage: bg ? `linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.10)), url(${bg})` : undefined,
+                    backgroundImage: bg
+                      ? `linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.10)), url(${bg})`
+                      : undefined,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}
@@ -339,7 +340,8 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
             <button
               key={gameName}
               onClick={() => setSelectedGame(gameName)}
-              className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 transition-all duration-300 group text-left
+              className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 bg-linear-to-b from-[#2a2640]/60 to-[#1a1630]/70
+                          transition-all duration-300 group text-left
               hover:shadow-amber-300"
             >
               {/* BORDER DESIGNS */}
@@ -401,27 +403,42 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
 
               {/* Game title */}
               <div className="flex items-center justify-center mb-6 w-full">
-                        <div className="flex-1 h-px bg-linear-to-r from-transparent via-amber-500/50 to-transparent max-w-16"></div>
-                        <h3 className={`text-2xl text-yellow-400 font-bold text-center mx-4 bg-linear-to-r bg-clip-text group-hover:scale-105 transition-transform duration-300`} style={{
-                          textShadow: '0 0 5px rgba(251, 191, 36, 0.6)',
-                        }}>
-                          {gameName}
-                        </h3>
-                        <div className="flex-1 h-px bg-linear-to-l from-transparent via-amber-500/50 to-transparent max-w-16"></div>
-                      </div>
+                <div className="flex-1 h-px bg-linear-to-r from-transparent via-amber-500/50 to-transparent max-w-16"></div>
+                <h3
+                  className={`text-2xl text-yellow-400 font-bold text-center mx-4 bg-linear-to-r bg-clip-text group-hover:scale-105 transition-transform duration-300`}
+                  style={{
+                    textShadow: "0 0 5px rgba(251, 191, 36, 0.6)",
+                  }}
+                >
+                  {gameName}
+                </h3>
+                <div className="flex-1 h-px bg-linear-to-l from-transparent via-amber-500/50 to-transparent max-w-16"></div>
+              </div>
 
               {/* Center Icon/ View Rankings Icon */}
-                      <div className="flex flex-col items-center justify-center text-amber-300 space-y-3 my-6">
-                        <div className="relative">
-                          <div className="absolute inset-0 bg-amber-400/20 blur-xl group-hover:bg-amber-400/40 transition-all duration-300"></div>
-                          <div className="relative w-16 h-16 border-2 border-amber-500/70 group-hover:border-amber-400 flex items-center justify-center transition-all duration-300 bg-linear-to-br from-[#2a2f4a] to-[#1a1f3a]">
-                            <svg className="w-8 h-8 text-amber-400 group-hover:text-amber-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                          </div>
-                        </div>
-                        <p className="text-xs text-amber-400/80 group-hover:text-amber-300 transition-colors uppercase tracking-wider">View Rankings</p>
-                      </div>
+              <div className="flex flex-col items-center justify-center text-amber-300 space-y-3 my-6">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-amber-400/20 blur-xl group-hover:bg-amber-400/40 transition-all duration-300"></div>
+                  <div className="relative w-16 h-16 border-2 border-amber-500/70 group-hover:border-amber-400 flex items-center justify-center transition-all duration-300 bg-linear-to-br from-[#2a2f4a] to-[#1a1f3a]">
+                    <svg
+                      className="w-8 h-8 text-amber-400 group-hover:text-amber-300 transition-colors"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <p className="text-xs text-amber-400/80 group-hover:text-amber-300 transition-colors uppercase tracking-wider">
+                  View Rankings
+                </p>
+              </div>
 
               {/* Bottom ornamental dots */}
               <div className="flex gap-2 mt-4 justify-center">
@@ -476,14 +493,12 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
                         : index === 2
                         ? "bg-orange-700/20 border-orange-700/50 hover:bg-orange-700/30"
                         : "bg-white/5 border-transparent hover:bg-white/10"
-                        
-                    }`
-                  }
-                  style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.10)), url(${bg})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
+                    }`}
+                    style={{
+                      backgroundImage: `linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.10)), url(${bg})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
                   >
                     <div className="flex items-center gap-4">
                       <span
@@ -512,7 +527,9 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
                       <p className="text-lg md:text-xl font-bold text-white">
                         {team.points}
                       </p>
-                      <p className="text-[10px] md:text-xs text-white/60 uppercase">Points</p>
+                      <p className="text-[10px] md:text-xs text-white/60 uppercase">
+                        Points
+                      </p>
                     </div>
                   </button>
                 </DialogTrigger>
