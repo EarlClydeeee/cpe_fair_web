@@ -10,6 +10,7 @@ import SnezhnayaBG from "@/assets/images/backgrounds/snezhnaya.jpg";
 
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { TeamScoreModal } from "./leaderboard";
+import StarryBackground from "../StarryBackground";
 
 // Restoring the original BG_MAP using .src properties
 const BG_MAP: Record<string, string> = {
@@ -65,7 +66,7 @@ const Podium = ({ topTeams }: PodiumProps) => {
       case 1:
         return {
           rankLabel: "1st",
-          height: "md:h-70", // Tallest (320px)
+          height: "h-50 md:h-70", // Tallest (320px)
           bgColor: "bg-yellow-600", // Darker gold for top of block
           ringColor: "ring-yellow-800", // Dark gold base
           shadow: "drop-shadow-[0_0_10px_rgb(250,215,50)]",
@@ -78,7 +79,7 @@ const Podium = ({ topTeams }: PodiumProps) => {
       case 2:
         return {
           rankLabel: "2nd",
-          height: "md:h-60", // Medium (256px)
+          height: "h-40 md:h-60", // Medium (256px)
           bgColor: "bg-gray-500", // Darker silver for top of block
           ringColor: "ring-gray-700", // Dark silver base
           shadow: "drop-shadow-[0_0_10px_rgb(189,187,187)]",
@@ -91,7 +92,7 @@ const Podium = ({ topTeams }: PodiumProps) => {
       case 3:
         return {
           rankLabel: "3rd",
-          height: "md:h-50", // Shortest (224px)
+          height: "h-35 md:h-50", // Shortest (224px)
           bgColor: "bg-amber-700", // Darker bronze for top of block
           ringColor: "ring-amber-900", // Dark bronze base
           shadow: "drop-shadow-[0_0_10px_rgb(181,122,51)]",
@@ -108,7 +109,7 @@ const Podium = ({ topTeams }: PodiumProps) => {
 
   return (
     <div className="">
-      <div className="grid grid-cols-2 px-2 mb-4 md:flex md:justify-center md:items-end gap-4 md:gap-8 ">
+      <div className="flex justify-center items-end gap-2 md:gap-8 ">
         
         {podiumOrder.map((team, index) => {
           // Use the restored pickBg function to get the actual image src
@@ -122,21 +123,18 @@ const Podium = ({ topTeams }: PodiumProps) => {
                 <div
                   key={team.section_team}
                   // Increased width here: w-40 (10rem) and sm:w-56 (14rem)
-                  className={`flex flex-col items-center transition-all duration-300 ${rankData.height} md:w-75
-                      ${index === 0 ? "col-span-1 order-2 md:order-1" : ""}
-                      ${index === 1 ? "col-span-2 order-1 md:order-2" : ""}
-                      ${index === 2 ? "col-span-1 order-3 md:order-3" : ""}`}
-                >
-                    
+                  className={`flex flex-col items-center transition-all duration-300 ${rankData.height} w-24 md:w-75`}
+                >        
+                            
                   {/* Rank Label (Above Block) */}
-                  <div className={`text-xl font-bold mb-2 ${rankData.textColor} drop-shadow-lg`}>
+                  <div className={`text-sm md:text-xl font-bold mb-2 ${rankData.textColor} drop-shadow-lg`}>
                     {rankData.rankLabel}
                   </div>
                   
 
                   {/* Podium Block - The wider, themed block */}
                   <div
-                    className={`w-full ${rankData.height} h-40 rounded-t-xl flex flex-col items-center justify-end p-3 md:p-5 ${rankData.ringColor} ${rankData.shadow} transform hover:scale-[1.03] transition-transform duration-200 cursor-pointer overflow-hidden relative
+                    className={`w-full ${rankData.height} rounded-t-xl flex flex-col items-center justify-end p-3 md:p-5 ${rankData.ringColor} ${rankData.shadow} transform hover:scale-[1.03] transition-transform duration-200 cursor-pointer overflow-hidden relative
                     drop-shadow-[0_0_1px_rgb(250,215,50)]`}
                   >
                     {/* BORDER DESIGNS */}
@@ -199,8 +197,9 @@ const Podium = ({ topTeams }: PodiumProps) => {
                     <div
                       className="absolute inset-0 bg-cover bg-center transition-all duration-500 hover:scale-105 z-0"
                       // Use style for background image derived from the restored imports
-                      style={{ backgroundImage: bg ? `url(${bg})` : "none" }}
+                      style={{ backgroundImage: bg ? `linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), url(${bg})` : "none" }}
                     />
+                    <StarryBackground starCount={10} />
 
                     {/* Color/Gradient Overlay (to apply the metallic color and keep content readable) */}
                     <div
@@ -211,7 +210,7 @@ const Podium = ({ topTeams }: PodiumProps) => {
                     <div className="relative z-10 flex flex-col items-center">
                       {/* Team Name */}
                       <span
-                        className={`font-extrabold text-lg md:text-2xl text-center px-1 mb-1 truncate w-full drop-shadow-lg ${rankData.textColor}`}
+                        className={`font-extrabold text-[12px] md:text-2xl text-center px-1 mb-1 truncate w-full drop-shadow-lg ${rankData.textColor}`}
                         style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.3)" }}
                       >
                         {team.section_team}
@@ -219,17 +218,17 @@ const Podium = ({ topTeams }: PodiumProps) => {
 
                       {/* Total Points */}
                       <span
-                        className="text-white/90 text-lg md:text-4xl font-black mb-1 drop-shadow-lg"
+                        className="text-white/90 text-[15px] md:text-4xl font-black mb-1 drop-shadow-lg"
                         style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.3)" }}
                       >
                         {team.totalPoints.toLocaleString()}
                       </span>
 
                       {/* Score Label */}
-                      <span className="text-white/70 text-[10px] md:text-sm uppercase font-medium">
+                      <span className="text-white/70 text-[8px] md:text-sm uppercase font-medium">
                         Points
                       </span>
-                      <p className="text-white/70 text-[10px] md:text-sm text-center">
+                      <p className="text-white/70 text-[8px] md:text-sm text-center">
                         {team.scores.length} Games Played
                       </p>
                     </div>
