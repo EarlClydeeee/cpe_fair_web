@@ -573,7 +573,7 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
                     }}
                   >
                     <div className="flex items-center gap-4">
-                      <StarryBackground starCount={5} />
+                      <StarryBackground starCount={10} />
                       <span
                         className={`text-xl font-bold w-8 text-center ${
                           index === 0
