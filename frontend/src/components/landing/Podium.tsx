@@ -10,6 +10,7 @@ import SnezhnayaBG from "@/assets/images/backgrounds/snezhnaya.jpg";
 
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { TeamScoreModal } from "./leaderboard";
+import StarryBackground from "../StarryBackground";
 
 // Restoring the original BG_MAP using .src properties
 const BG_MAP: Record<string, string> = {
@@ -123,8 +124,8 @@ const Podium = ({ topTeams }: PodiumProps) => {
                   key={team.section_team}
                   // Increased width here: w-40 (10rem) and sm:w-56 (14rem)
                   className={`flex flex-col items-center transition-all duration-300 ${rankData.height} w-24 md:w-75`}
-                >
-                    
+                >        
+                            
                   {/* Rank Label (Above Block) */}
                   <div className={`text-sm md:text-xl font-bold mb-2 ${rankData.textColor} drop-shadow-lg`}>
                     {rankData.rankLabel}
@@ -198,6 +199,7 @@ const Podium = ({ topTeams }: PodiumProps) => {
                       // Use style for background image derived from the restored imports
                       style={{ backgroundImage: bg ? `linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), url(${bg})` : "none" }}
                     />
+                    <StarryBackground starCount={10} />
 
                     {/* Color/Gradient Overlay (to apply the metallic color and keep content readable) */}
                     <div

@@ -303,7 +303,7 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}
-                  className={`w-full flex items-center justify-between p-6 rounded-xl border transition-all duration-300 hover:scale-[1.01] ${
+                  className={`w-full flex items-center justify-between p-6 rounded-xl border transition-scale duration-300 hover:scale-[1.01] ${
                     bg
                       ? "border-white/20"
                       : index === 0
@@ -547,7 +547,7 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
 
       <div className="bg-white/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 backdrop-blur-md rounded-xl p-4 md:p-6 border border-white/20">
       <StarryBackground starCount={75} />
-        <h3 className="text-lg md:text-2xl font-bold text-white mb-4 border-b border-white/20 pb-2">
+        <h3 className="text-lg md:text-2xl font-bold text-white/10 mb-4 border-b border-white/20 pb-2 text-transparent bg-clip-text bg-linear-to-b from-[#f0e6d2] via-[#d3bc8e] to-[#9d8f6f] drop-shadow-[0_0_30px_rgba(211,188,142,0.8)]">
           {selectedGame}
         </h3>
 
@@ -574,6 +574,7 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
                     }}
                   >
                     <div className="flex items-center gap-4">
+                      <StarryBackground starCount={5} />
                       <span
                         className={`text-xl font-bold w-8 text-center ${
                           index === 0
