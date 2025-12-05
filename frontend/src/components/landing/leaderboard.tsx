@@ -7,7 +7,7 @@ import {
 import { usePlayers } from "@/hooks/usePlayer";
 import { useGames } from "@/hooks/useGame";
 import { GameCategory } from "@/types/game";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Star } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -25,6 +25,8 @@ import MondstadtBG from "@/assets/images/backgrounds/mondstadt.jpg";
 import NatlanBG from "@/assets/images/backgrounds/natlan.jpg";
 import SumeruBG from "@/assets/images/backgrounds/sumeru.jpg";
 import SnezhnayaBG from "@/assets/images/backgrounds/snezhnaya.jpg";
+import BorderDesign from "./BorderDesign";
+import StarryBackground from "../StarryBackground";
 
 const BG_MAP: Record<string, string> = {
   fontaine: FontaineBG.src,
@@ -80,12 +82,14 @@ export const TeamScoreModal = ({
   };
 
   return (
-    <DialogContent className="max-w-2xl max-h-[80vh] bg-[#0a0a2e] border-white/20 text-white">
+    <DialogContent className="max-w-2xl max-h-[80vh] bg-[#2a2640]/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 text-white">
+      <BorderDesign />
+      <StarryBackground starCount={20}/>
       <DialogHeader>
-        <DialogTitle className="text-2xl font-bold text-white flex items-center gap-3">
+        <DialogTitle className="px-2 text-2xl font-bold flex flex-col items-center text-transparent bg-clip-text bg-linear-to-b from-[#f0e6d2] via-[#d3bc8e] to-[#9d8f6f] drop-shadow-[0_0_30px_rgba(211,188,142,0.8)]">
           <span>{teamName}</span>
-          <span className="text-white/60 text-base font-normal">
-            - Score Breakdown
+          <span className="text-white/50 text-base font-normal">
+            Score Breakdown
           </span>
         </DialogTitle>
       </DialogHeader>
@@ -96,10 +100,10 @@ export const TeamScoreModal = ({
             .map((score) => (
               <div
                 key={score.id}
-                className="bg-white/5 p-4 rounded-lg border border-white/10 flex justify-between items-center"
+                className="p-4 rounded-lg border border-white/10 flex justify-between items-center bg-linear-to-br from-[#FEF4BF]/30 to-transparent"
               >
                 <div>
-                  <p className="font-bold text-lg text-white">{score.game}</p>
+                  <p className="font-bold text-lg text-white drop-shadow-2xl">{score.game}</p>
                   <div className="flex flex-col gap-1 text-sm text-white/60">
                     <span className="bg-white/10 px-2 py-0.5 rounded text-xs w-fit">
                       {score.category}
@@ -110,7 +114,7 @@ export const TeamScoreModal = ({
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-xl text-yellow-400">
+                  <p className="font-bold text-xl text-white/10 text-transparent bg-clip-text bg-linear-to-b from-[#f0e6d2] via-[#d3bc8e] to-[#9d8f6f] shadow-lg">
                     {score.points}
                   </p>
                   <p className="text-xs text-white/40">Points</p>
@@ -168,9 +172,11 @@ const GamePlayersModal = ({
   }, [details, players]);
 
   return (
-    <DialogContent className="max-w-md max-h-[80vh] bg-[#0a0a2e] border-white/20 text-white">
+    <DialogContent className="max-w-md max-h-[80vh] bg-[#2a2640]/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 text-white">
+      <BorderDesign />
+      <StarryBackground starCount={10}/>
       <DialogHeader>
-        <DialogTitle className="text-2xl font-bold text-white flex flex-col gap-1">
+        <DialogTitle className="px-2 text-2xl font-bold flex flex-col items-center text-transparent bg-clip-text bg-linear-to-b from-[#f0e6d2] via-[#d3bc8e] to-[#9d8f6f] drop-shadow-[0_0_30px_rgba(211,188,142,0.8)]">
           <span>{teamName}</span>
           <span className="text-white/60 text-base font-normal">
             {gameName} Roster
@@ -183,7 +189,7 @@ const GamePlayersModal = ({
             (p: { fullName: string; cys: string }, i: number) => (
               <div
                 key={i}
-                className="bg-white/5 p-4 rounded-lg border border-white/10 flex justify-between items-center"
+                className="bg-linear-to-br from-[#FEF4BF]/30 to-transparent p-4 rounded-lg border border-white/10 flex justify-between items-center"
               >
                 <span className="font-bold text-white">{p.fullName}</span>
                 {p.cys && (
