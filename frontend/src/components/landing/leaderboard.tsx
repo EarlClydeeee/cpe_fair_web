@@ -81,10 +81,15 @@ export const TeamScoreModal = ({
     );
   };
 
+  const bg=pickBg(teamName);
   return (
-    <DialogContent className="max-w-2xl max-h-[80vh] bg-[#2a2640]/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 text-white">
+    <DialogContent className="max-w-2xl max-h-[80vh] bg-[#2a2640]/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 text-white" 
+      style={{
+                      backgroundImage: `linear-gradient(rgba(0,0,0,0.30), rgba(0,0,0,0.30)), url(${bg})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}>
       <BorderDesign />
-      <StarryBackground starCount={20}/>
       <DialogHeader>
         <DialogTitle className="px-2 text-2xl font-bold flex flex-col items-center text-transparent bg-clip-text bg-linear-to-b from-[#f0e6d2] via-[#d3bc8e] to-[#9d8f6f] drop-shadow-[0_0_30px_rgba(211,188,142,0.8)]">
           <span>{teamName}</span>
@@ -103,7 +108,7 @@ export const TeamScoreModal = ({
                 className="p-4 rounded-lg border border-white/10 flex justify-between items-center bg-linear-to-br from-[#FEF4BF]/30 to-transparent"
               >
                 <div>
-                  <p className="font-bold text-lg text-white drop-shadow-2xl">{score.game}</p>
+                  <p className="font-bold text-lg text-white">{score.game}</p>
                   <div className="flex flex-col gap-1 text-sm text-white/60">
                     <span className="bg-white/10 px-2 py-0.5 rounded text-xs w-fit">
                       {score.category}
@@ -114,7 +119,7 @@ export const TeamScoreModal = ({
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-xl text-white/10 text-transparent bg-clip-text bg-linear-to-b from-[#f0e6d2] via-[#d3bc8e] to-[#9d8f6f] shadow-lg">
+                  <p className="font-bold text-xl text-white/10 text-transparent bg-clip-text bg-linear-to-b from-[#f0e6d2] via-[#d3bc8e] to-[#9d8f6f]">
                     {score.points}
                   </p>
                   <p className="text-xs text-white/40">Points</p>
@@ -171,10 +176,15 @@ const GamePlayersModal = ({
     ];
   }, [details, players]);
 
+  const bg=pickBg(teamName);
   return (
-    <DialogContent className="max-w-md max-h-[80vh] bg-[#2a2640]/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 text-white">
+    <DialogContent className="max-w-md max-h-[80vh] bg-[#2a2640]/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 text-white" 
+      style={{
+                      backgroundImage: `linear-gradient(rgba(0,0,0,0.30), rgba(0,0,0,0.30)), url(${bg})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}>
       <BorderDesign />
-      <StarryBackground starCount={10}/>
       <DialogHeader>
         <DialogTitle className="px-2 text-2xl font-bold flex flex-col items-center text-transparent bg-clip-text bg-linear-to-b from-[#f0e6d2] via-[#d3bc8e] to-[#9d8f6f] drop-shadow-[0_0_30px_rgba(211,188,142,0.8)]">
           <span>{teamName}</span>
@@ -368,6 +378,7 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
                  className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 bg-linear-to-b from-[#2a2640]/60 to-[#1a1630]/70
                           transition-all duration-300 group text-left"
             >
+              <StarryBackground starCount={10} />
               {/* BORDER DESIGNS */}
               <div
                 className="absolute inset-0 border-4 border-[#A89265] group-hover:border-[#f2d9a7] transition-colors duration-300"
