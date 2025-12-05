@@ -536,16 +536,17 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
   }
 
   return (
-    <div className="w-full mb-6 px-[5vw] md:px-[10vw]">
+    <div className="w-full mb-6 px-[5vw] md:px-[10vw] ">
       <button
         onClick={() => setSelectedGame(null)}
-        className="flex items-center gap-2 text-white/80 hover:text-white mb-3 md:mb-6 transition-colors"
+        className="flex items-center gap-2 text-white/80  hover:text-white mb-3 md:mb-6 transition-colors"
       >
         <ChevronLeft size={20} />
         <span>Back to Games</span>
       </button>
 
-      <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 md:p-6 border border-white/20">
+      <div className="bg-white/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 backdrop-blur-md rounded-xl p-4 md:p-6 border border-white/20">
+      <StarryBackground starCount={75} />
         <h3 className="text-lg md:text-2xl font-bold text-white mb-4 border-b border-white/20 pb-2">
           {selectedGame}
         </h3>

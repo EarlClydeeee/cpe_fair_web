@@ -196,7 +196,7 @@ const Podium = ({ topTeams }: PodiumProps) => {
                     <div
                       className="absolute inset-0 bg-cover bg-center transition-all duration-500 hover:scale-105 z-0"
                       // Use style for background image derived from the restored imports
-                      style={{ backgroundImage: bg ? `url(${bg})` : "none" }}
+                      style={{ backgroundImage: bg ? `linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), url(${bg})` : "none" }}
                     />
 
                     {/* Color/Gradient Overlay (to apply the metallic color and keep content readable) */}

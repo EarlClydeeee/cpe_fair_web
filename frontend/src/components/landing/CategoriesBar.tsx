@@ -60,7 +60,7 @@ const CategoriesBar = ({ selectedCategory, onSelect }: CategoriesBarProps) => {
 
   return (
     <div className="px-3 relative overflow-x-auto hide-scrollbar">
-    <div className="text-white flex md:flex md:justify-center gap-6 px-2 py-4 w-max md:w-full">
+    <div className="text-white flex md:flex md:justify-center gap-1 md:gap-6 px-2 py-4 w-max md:w-full">
       {categories.map((category, index) => (
         <button
           key={index}
