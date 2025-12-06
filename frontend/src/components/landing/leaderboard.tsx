@@ -281,60 +281,10 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
       );
     }
 
-    // If no scores exist, show teams from /team endpoint
     if (!aggregatedScores || aggregatedScores.length === 0) {
-      if (!teams || teams.length === 0) {
-        return (
-          <div className="text-white text-center">No teams available.</div>
-        );
-      }
-
-      // Display teams with 0 points
       return (
-        <div className="w-full px-[5vw] md:px-[10vw] flex flex-col gap-4 mb-6">
-          <h2 className="text-2xl font-bold text-white text-center">
-            Overall Leaderboard
-          </h2>
-          <p className="text-white/60 text-center mb-4">
-            No scores recorded yet. Teams will appear here once games are
-            played.
-          </p>
-          {teams.map((team, index) => {
-            const bg = pickBg(team.name);
-            return (
-              <div
-                key={team.id}
-                style={{
-                  backgroundImage: bg
-                    ? `linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.10)), url(${bg})`
-                    : undefined,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-                className={`w-full flex items-center justify-between p-6 rounded-xl border transition-scale duration-300 scale-[1.01] relative overflow-hidden ${
-                  bg ? "border-white/20" : "border-white/20"
-                }`}
-              >
-                <StarryBackground starCount={10} />
-                <div className="flex items-center gap-3 md:gap-6">
-                  <div className="text-left">
-                    <h3 className="text-md md:text-2xl font-bold text-white">
-                      {team.name}
-                    </h3>
-                    <p className="text-white/60 text-sm md:text-base">
-                      {team.section_represented}
-                    </p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-lg md:text-3xl font-bold text-white">0</p>
-                  <p className="text-[10px] md:text-sm text-white/60 uppercase tracking-wider">
-                    Points
-                  </p>
-                </div>
-              </div>
-            );
-          })}
+        <div className="text-white text-center">
+          No overall standings available.
         </div>
       );
     }
@@ -651,30 +601,6 @@ missingTeams.forEach((teamName) => {
           <span>Back to Games</span>
         </button>
         <div className="text-white text-center">Loading rankings...</div>
-      </div>
-    );
-  }
-
-  if (gameScores.length === 0) {
-    return (
-      <div className="w-full mb-6 px-[5vw] md:px-[10vw]">
-        <button
-          onClick={() => setSelectedGame(null)}
-          className="flex items-center gap-2 text-white/80 hover:text-white mb-3 md:mb-6 transition-colors"
-        >
-          <ChevronLeft size={20} />
-          <span>Back to Games</span>
-        </button>
-
-        <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 md:p-6 border border-white/20 text-center py-12">
-          <h3 className="text-lg md:text-2xl font-bold text-white mb-2">
-            {selectedGame}
-          </h3>
-          <p className="text-white/60 text-lg">🎮 Event not yet started</p>
-          <p className="text-white/40 text-sm mt-2">
-            Check back later for rankings!
-          </p>
-        </div>
       </div>
     );
   }
