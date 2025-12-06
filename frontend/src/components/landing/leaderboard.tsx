@@ -322,7 +322,7 @@ missingTeams.forEach((teamName) => {
           Overall Leaderboard
         </h2>
         <Podium topTeams={topThree} />
-        {sortedTeams.slice(3).map((team, index) => {
+        {completeTeams.slice(3).map((team, index) => {
           const bg = pickBg(team.section_team);
           return (
             <Dialog key={team.section_team}>
