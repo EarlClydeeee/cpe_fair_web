@@ -689,7 +689,7 @@ missingTeams.forEach((teamName) => {
                           {score.teamName}
                         </p>
                         <p className="text-[10px] md:text-sm text-white/60 text-left line-clamp-1">
-                          {score.contributor || "Unknown"}
+                          {score.contributor || "None"}
                         </p>
                       </div>
                     </div>
