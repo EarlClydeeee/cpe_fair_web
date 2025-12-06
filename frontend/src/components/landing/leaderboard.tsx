@@ -281,32 +281,126 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
       );
     }
 
+    // If no scores exist, show teams from /team endpoint
+    if (!aggregatedScores || aggregatedScores.length === 0) {
+      if (!teams || teams.length === 0) {
+        return (
+          <div className="text-white text-center">No teams available.</div>
+        );
+      }
+
+      // Display teams with 0 points (no podium, no ranking numbers)
+      return (
+        <div className="w-full px-[5vw] md:px-[10vw] flex flex-col gap-4 mb-6">
+          <h2 className="text-2xl font-bold text-white text-center">
+            Overall Leaderboard
+          </h2>
+          <p className="text-white/60 text-center mb-4">
+            No scores recorded yet. Teams will appear here once games are
+            played.
+          </p>
+          {teams.map((team) => {
+            const bg = pickBg(team.name);
+            return (
+              <Dialog key={team.id}>
+                <DialogTrigger asChild>
+                  <button
+                    style={{
+                      backgroundImage: bg
+                        ? `linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.10)), url(${bg})`
+                        : undefined,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                    className="w-full flex items-center justify-between p-6 rounded-xl border border-white/20 transition-scale duration-300 scale-[1.01] hover:scale-[1.02] group relative overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#d3bc8e]/0 via-[#f0e6d2]/30 to-[#d3bc8e]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
+                    <StarryBackground starCount={10} />
+                    <div className="flex items-center gap-3 md:gap-6">
+                      <div className="text-left">
+                        <h3 className="text-md md:text-2xl font-bold text-white">
+                          {team.name}
+                        </h3>
+                        <p className="text-white/60 text-sm md:text-base">
+                          {team.section_represented}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-lg md:text-3xl font-bold text-white">
+                        0
+                      </p>
+                      <p className="text-[10px] md:text-sm text-white/60 uppercase tracking-wider">
+                        Points
+                      </p>
+                    </div>
+                  </button>
+                </DialogTrigger>
+                <DialogContent
+                  className="max-w-[90%] sm:max-w-md max-h-[80vh] bg-[#2a2640]/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 text-white"
+                  style={{
+                    backgroundImage: `linear-gradient(rgba(0,0,0,0.30), rgba(0,0,0,0.30)), url(${bg})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  <BorderDesign />
+                  <DialogHeader>
+                    <DialogTitle className="px-2 text-2xl font-bold flex flex-col items-center text-transparent bg-clip-text bg-linear-to-b from-[#f0e6d2] via-[#d3bc8e] to-[#9d8f6f] drop-shadow-[0_0_30px_rgba(211,188,142,0.8)]">
+                      <span>{team.name}</span>
+                      <span className="text-white/50 text-base font-normal">
+                        No Scores Yet
+                      </span>
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="p-4 text-center">
+                    <p className="text-white/70 text-sm">
+                      This team hasn't participated in any games yet. Scores
+                      will appear here once they start competing.
+                    </p>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            );
+          })}
+        </div>
+      );
+    }
+
     // Sort by totalPoints descending
-    const sortedTeams = [...aggregatedScores || []].sort(
+    const sortedTeams = [...aggregatedScores].sort(
       (a, b) => b.totalPoints - a.totalPoints
     );
 
-    
+    // Add missing teams with 0 points
     const sectionTeams = [
-      "Fontaine", "Snezhnaya", "Sumeru", "Mondstadt",
-      "Liyue", "Inazuma", "Natlan"
-    ]
-// Start with existing team objects
-const completeTeams = [...sortedTeams]; // assuming gameScores is in this shape
-// Find missing teams
-const missingTeams = sectionTeams.filter(
-  (teamName) => !sortedTeams.some((t) => t.section_team === teamName)
-);
+      "Fontaine",
+      "Snezhnaya",
+      "Sumeru",
+      "Mondstadt",
+      "Liyue",
+      "Inazuma",
+      "Natlan",
+    ];
 
-// Append missing teams
-missingTeams.forEach((teamName) => {
-  completeTeams.push({
-    section_team: teamName,
-    totalPoints: 0,
-    scores: [], // no individual scores yet
-  });
-});
-const topThree = [...completeTeams].slice(0, 3);
+    // Start with existing team objects
+    const completeTeams = [...sortedTeams];
+
+    // Find missing teams
+    const missingTeams = sectionTeams.filter(
+      (teamName) => !sortedTeams.some((t) => t.section_team === teamName)
+    );
+
+    // Append missing teams with 0 points
+    missingTeams.forEach((teamName) => {
+      completeTeams.push({
+        section_team: teamName,
+        totalPoints: 0,
+        scores: [],
+      });
+    });
+
+    const topThree = [...completeTeams].slice(0, 3);
 
     return (
       <div className="w-full px-[5vw] md:px-[10vw] flex flex-col gap-4 mb-6">
@@ -598,31 +692,36 @@ const topThree = [...completeTeams].slice(0, 3);
   }
 
   const sectionTeams = [
-      "Fontaine", "Snezhnaya", "Sumeru", "Mondstadt",
-      "Liyue", "Inazuma", "Natlan"
-    ]
-// Start with existing scores
-const completeScores = [...gameScores];
+    "Fontaine",
+    "Snezhnaya",
+    "Sumeru",
+    "Mondstadt",
+    "Liyue",
+    "Inazuma",
+    "Natlan",
+  ];
+  // Start with existing scores
+  const completeScores = [...gameScores];
 
-// Find missing teams
-const missingTeams = sectionTeams.filter(
-  (teamName) => !gameScores.some((s) => s.teamName === teamName)
-);
+  // Find missing teams
+  const missingTeams = sectionTeams.filter(
+    (teamName) => !gameScores.some((s) => s.teamName === teamName)
+  );
 
-// Append missing teams with points = 0
-missingTeams.forEach((teamName) => {
-  completeScores.push({
-    id: Math.random(), // temporary unique id
-    teamName,
-    game: selectedGame || "",
-    category: "",
-    points: 0,
-    contributor: "",
-    isGroup: false,
-    members: [],
-    createdAt: new Date().toISOString(),
-  } as Score);
-});
+  // Append missing teams with points = 0
+  missingTeams.forEach((teamName) => {
+    completeScores.push({
+      id: Math.random(), // temporary unique id
+      teamName,
+      game: selectedGame || "",
+      category: "",
+      points: 0,
+      contributor: "",
+      isGroup: false,
+      members: [],
+      createdAt: new Date().toISOString(),
+    } as Score);
+  });
   return (
     <div className="w-full mb-6 px-[5vw] md:px-[10vw] ">
       <button
@@ -641,16 +740,18 @@ missingTeams.forEach((teamName) => {
         <div className="flex flex-col gap-3">
           {completeScores.map((score, index) => {
             const bg = pickBg(score.teamName);
+            const hasScore = score.points > 0;
+
             return (
               <Dialog key={score.id}>
                 <DialogTrigger asChild>
                   <button
                     className={`w-full group relative overflow-hidden flex items-center justify-between p-4 rounded-lg border transition-all duration-300 hover:scale-[1.01] ${
-                      index === 0
+                      hasScore && index === 0
                         ? "bg-yellow-500/20 border-yellow-500/50 hover:bg-yellow-500/30"
-                        : index === 1
+                        : hasScore && index === 1
                         ? "bg-gray-400/20 border-gray-400/50 hover:bg-gray-400/30"
-                        : index === 2
+                        : hasScore && index === 2
                         ? "bg-orange-700/20 border-orange-700/50 hover:bg-orange-700/30"
                         : "bg-white/5 border-transparent hover:bg-white/10"
                     }`}
@@ -663,25 +764,29 @@ missingTeams.forEach((teamName) => {
                     <div className="absolute inset-0 bg-gradient-to-r from-[#d3bc8e]/0 via-[#f0e6d2]/30 to-[#d3bc8e]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
                     <div className="flex items-center gap-4">
                       <StarryBackground starCount={10} />
-                      <span
-                        className={`text-xl font-bold w-8 text-center ${
-                          index === 0
-                            ? "text-yellow-400"
-                            : index === 1
-                            ? "text-gray-300"
-                            : index === 2
-                            ? "text-orange-400"
-                            : "text-white/60"
-                        }`}
-                      >
-                        #{index + 1}
-                      </span>
+                      {hasScore && (
+                        <span
+                          className={`text-xl font-bold w-8 text-center ${
+                            index === 0
+                              ? "text-yellow-400"
+                              : index === 1
+                              ? "text-gray-300"
+                              : index === 2
+                              ? "text-orange-400"
+                              : "text-white/60"
+                          }`}
+                        >
+                          #{index + 1}
+                        </span>
+                      )}
                       <div className="text-left">
                         <p className="font-bold text-sm md:text-lg text-white">
                           {score.teamName}
                         </p>
                         <p className="text-[10px] md:text-sm text-white/60 text-left line-clamp-1">
-                          {score.contributor || "None"}
+                          {hasScore
+                            ? score.contributor || "None"
+                            : "No score yet"}
                         </p>
                       </div>
                     </div>
@@ -696,11 +801,38 @@ missingTeams.forEach((teamName) => {
                   </button>
                 </DialogTrigger>
 
-                <GamePlayersModal
-                  teamName={score.teamName || "Unknown"}
-                  gameName={selectedGame || ""}
-                  details={score}
-                />
+                {hasScore ? (
+                  <GamePlayersModal
+                    teamName={score.teamName || "Unknown"}
+                    gameName={selectedGame || ""}
+                    details={score}
+                  />
+                ) : (
+                  <DialogContent
+                    className="max-w-[90%] sm:max-w-md max-h-[80vh] bg-[#2a2640]/10 bg-linear-to-b from-[#2a2640]/30 to-[#1a1630]/70 text-white"
+                    style={{
+                      backgroundImage: `linear-gradient(rgba(0,0,0,0.30), rgba(0,0,0,0.30)), url(${bg})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                  >
+                    <BorderDesign />
+                    <DialogHeader>
+                      <DialogTitle className="px-2 text-2xl font-bold flex flex-col items-center text-transparent bg-clip-text bg-linear-to-b from-[#f0e6d2] via-[#d3bc8e] to-[#9d8f6f] drop-shadow-[0_0_30px_rgba(211,188,142,0.8)]">
+                        <span>{score.teamName}</span>
+                        <span className="text-white/50 text-base font-normal">
+                          No Score Available
+                        </span>
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="p-4 text-center">
+                      <p className="text-white/70 text-sm">
+                        This team hasn't participated in {selectedGame} yet.
+                        Check back later for results.
+                      </p>
+                    </div>
+                  </DialogContent>
+                )}
               </Dialog>
             );
           })}
