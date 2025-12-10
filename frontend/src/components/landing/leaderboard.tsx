@@ -60,7 +60,7 @@ export const TeamScoreModal = ({
   teamName: string;
   scores: any[];
 }) => {
-  const { data: playersData } = usePlayers(1, 100, teamName);
+  const { data: playersData, isLoading } = usePlayers(1, 100, teamName);
   const players = playersData?.data || [];
 
   const getParticipants = (details: any) => {
@@ -105,7 +105,7 @@ export const TeamScoreModal = ({
       </DialogHeader>
       <ScrollArea className="h-[60vh] pr-4">
         <div className="flex flex-col gap-3 mt-4">
-          {scores
+          {[...scores]
             .sort((a, b) => b.points - a.points)
             .map((score) => (
               <div
@@ -165,7 +165,6 @@ const GamePlayersModal = ({
         return {
           name: memberName,
           fullName: player ? player.full_name : memberName,
-          cys: player ? player.cys : "N/A",
         };
       });
     }
@@ -252,6 +251,35 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
 
   const { data: aggregatedScores, isLoading: isAggregatedLoading } =
     useAggregatedScores();
+
+  // Calculate Minigame Podium Data
+  const miniGamePodiumData = useMemo(() => {
+    if (selectedCategory !== "Mini Games") return [];
+
+    const sourceData = aggregatedScores || [];
+
+    // Map to podium format
+    const podiumData = sourceData.map((team) => ({
+      section_team: team.section_team,
+      totalPoints: team.minigamePoints || 0,
+      scores: team.minigameScores || [],
+    }));
+
+    // Ensure all teams are represented
+    if (teams && teams.length > 0) {
+      teams.forEach((t) => {
+        if (!podiumData.find((p) => p.section_team === t.name)) {
+          podiumData.push({
+            section_team: t.name,
+            totalPoints: 0,
+            scores: [],
+          });
+        }
+      });
+    }
+
+    return podiumData.sort((a, b) => b.totalPoints - a.totalPoints);
+  }, [aggregatedScores, teams, selectedCategory]);
 
   // Reset selected game when category changes
   useEffect(() => {
@@ -487,6 +515,63 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
   if (!selectedGame) {
     return (
       <div className="w-full px-[3vh] md:px-[10vh] mb-6">
+        {selectedCategory === "Mini Games" && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-white text-center mb-6">
+              Mini Games Leaderboard
+            </h2>
+            <Podium topTeams={miniGamePodiumData} />
+            <div className="flex flex-col gap-4 mt-6">
+              {miniGamePodiumData.slice(3).map((team, index) => {
+                const bg = pickBg(team.section_team);
+                return (
+                  <Dialog key={team.section_team}>
+                    <DialogTrigger asChild>
+                      <button
+                        style={{
+                          backgroundImage: bg
+                            ? `linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.10)), url(${bg})`
+                            : undefined,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                        }}
+                        className={`w-full flex items-center justify-between p-6 rounded-xl border border-white/20 transition-scale duration-300 scale-[1.01] hover:scale-[1.02] group relative overflow-hidden`}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#d3bc8e]/0 via-[#f0e6d2]/30 to-[#d3bc8e]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
+                        <StarryBackground starCount={10} />
+                        <div className="flex items-center gap-3 md:gap-6">
+                          <span className="text-lg md:text-3xl font-bold w-12 text-center text-white/60">
+                            #{index + 4}
+                          </span>
+                          <div className="text-left">
+                            <h3 className="text-md md:text-2xl font-bold text-white">
+                              {team.section_team}
+                            </h3>
+                            <p className="text-white/60 text-sm md:text-2xl">
+                              {team.scores.length} Games Played
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-lg md:text-3xl font-bold text-white">
+                            {team.totalPoints.toLocaleString()}
+                          </p>
+                          <p className="text-[10px] md:text-sm text-white/60 uppercase tracking-wider">
+                            Total Points
+                          </p>
+                        </div>
+                      </button>
+                    </DialogTrigger>
+                    <TeamScoreModal
+                      teamName={team.section_team}
+                      scores={team.scores}
+                    />
+                  </Dialog>
+                );
+              })}
+            </div>
+          </div>
+        )}
         <h3 className="text-2xl font-bold text-white mb-6 text-center">
           Select a Game
         </h3>
@@ -597,62 +682,6 @@ const Leaderboard = ({ selectedCategory }: LeaderboardProps) => {
                   </p>
                 </div>
 
-                {/* Secondary Actions Row */}
-                <div className="flex gap-3 items-center justify-center w-full px-4">
-                  {/* View Bracketing Button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // TODO: Implement bracketing view
-                      alert(`View bracketing for ${game.name}`);
-                    }}
-                    className="flex-1 flex flex-col items-center gap-2 px-3 py-2 border border-[#9d8f6f]/40 hover:border-[#d3bc8e]/60 rounded bg-[#1a1f3a]/50 hover:bg-[#2a2f4a]/70 transition-all duration-300 group/btn"
-                  >
-                    <svg
-                      className="w-5 h-5 text-[#c8b896] group-hover/btn:text-[#d3bc8e] transition-colors"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-                      />
-                    </svg>
-                    <span className="text-[10px] text-[#c8b896] group-hover/btn:text-[#d3bc8e] uppercase tracking-wide transition-colors">
-                      Bracketing
-                    </span>
-                  </button>
-
-                  {/* View Schedule Button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // TODO: Implement schedule view
-                      alert(`View schedule for ${game.name}`);
-                    }}
-                    className="flex-1 flex flex-col items-center gap-2 px-3 py-2 border border-[#9d8f6f]/40 hover:border-[#d3bc8e]/60 rounded bg-[#1a1f3a]/50 hover:bg-[#2a2f4a]/70 transition-all duration-300 group/btn"
-                  >
-                    <svg
-                      className="w-5 h-5 text-[#c8b896] group-hover/btn:text-[#d3bc8e] transition-colors"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <span className="text-[10px] text-[#c8b896] group-hover/btn:text-[#d3bc8e] uppercase tracking-wide transition-colors">
-                      Schedule
-                    </span>
-                  </button>
-                </div>
               </div>
 
               {/* Bottom ornamental dots */}
