@@ -7,6 +7,7 @@ A comprehensive web-based game leaderboard and event management system designed 
 ![Express](https://img.shields.io/badge/Express-5.1.0-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)
 
+LIVE NOW: https://cpefair2025.vercel.app/contributors
 ---
 
 ## 📋 Table of Contents
@@ -588,3 +589,4 @@ _Powered by Genshin Impact's timeless aesthetics_
 [⬆ Back to Top](#-cpe-fair-web-application)
 
 </div>
+
